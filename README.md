@@ -1,14 +1,14 @@
-# ETCExplorer
+# Callisto Explorer
 
-<b>Live Version: [etherhub.io](http://etherhub.io)</b>
+[![Build Status](https://travis-ci.org/chainkorea/clo-explorer.svg?branch=master)](https://travis-ci.org/chainkorea/clo-explorer)
 
-Follow the project progress at: [ETC Block Explorer Development](https://github.com/ethereumproject/explorer)
+<b>Live Version: [cloexplorer.org](https://cloexplorer.org)</b>
 
 ## Local installation
 
 Clone the repo
 
-`git clone https://github.com/ethereumproject/explorer`
+`git clone https://github.com/chainkorea/clo-explorer`
 
 Download [Nodejs and npm](https://docs.npmjs.com/getting-started/installing-node "Nodejs install") if you don't have them
 
@@ -42,10 +42,10 @@ Basic settings:
     "patch":        true,
     "patchBlocks":  100,
     "settings": {
-        "symbol": "ETC",
-        "name": "Ethereum Classic",
-        "title": "Ethereum Classic Block Explorer",
-        "author": "Elaine"
+        "symbol": "CLO",
+        "name": "Callisto Network",
+        "title": "Callisto Network Block Explorer",
+        "author": "Callisto Network"
     }
 }
 
@@ -55,7 +55,7 @@ Basic settings:
 
 ```gethPort```    Your node API RPC port.
 
-```startBlock```  This is the start block of the blockchain, should always be 0 if you want to sync the whole ETC blockchain.
+```startBlock```  This is the start block of the blockchain, should always be 0 if you want to sync the whole CLO blockchain.
 
 ```endBlock```    This is usually the 'latest'/'newest' block in the blockchain, this value gets updated automatically, and will be used to patch missing blocks if the whole app goes down.
 

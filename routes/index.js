@@ -166,7 +166,7 @@ var getTotal = function(req, res) {
                       .lean(true).sort('-number');
   block.exec(function (err, doc) {
     // res.write(JSON.stringify(doc));
-    var total = 1000000000 + (doc.number) * 50;
+    var total = 100491853 + (doc.number) * 600;
     res.write(total.toString());
     res.end();
   });
