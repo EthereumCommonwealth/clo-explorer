@@ -37,12 +37,14 @@
            "0x800f25eb68a06ff9671605bd450c29e80f593e0a": "clo.minerpool.net",
            "0xa5d9018f6c99ec3230633c1187c5cb607c704ed8": "clo.mole-pool.net",
            "0xfe59743b65f2afec200ce279a289cb4a43eb7eeb": "farmine.net",
-           "0x811bad1a4041a9f6ed8fc2f4e9d421dc82626f81": "clo.kilosala.ru",
+           "0x811bad1a4041a9f6ed8fc2f4e9d421dc82626f81": "clo.ethash.farm",
            "0xbd12b4511ec9fd1cf481d5643f307252ae6f55e2": "solo.clopool.pro",
            "0x5f7661e493d4f1a318c02e9383568597e8a09b5a": "clopool.org",
            "0xe0bac765ca88706a12e4f5a9c0e92dc823fe6293": "clo.cryptomena.io",
            "0x40c48b386e15981df5a10552cb97ee6d232c8547": "solo-clo.ethash.farm",
-           "0x458ddc6a7e924554756f95715a53bf948560ee38": "clo.digipools.org"
+           "0x458ddc6a7e924554756f95715a53bf948560ee38": "clo.digipools.org",
+           "0x3c6b9edb1f8ec6c85436b7cb384eb607489c732f": "vvpool.com",
+           "0x2a1efdf9f09869a82e5e6b0f3736aabcb5381206": "uleypool.com"
         }
     }
 }
