@@ -14,6 +14,7 @@
         "title": "Callisto Network Blockchain Explorer",
         "author": "Callisto Network Community",
         "useEthFiat": false,
+        "tokenList": "tokens.json",
         "miners": {
            "0xed15b7b7b5dc81daae277a081b47a04c3a8bea1b": "clopool.pro",
            "0xd125b3b146d21d058edac7a5b5f7481a571e4c46": "clo.epool.io",
