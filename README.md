@@ -78,8 +78,5 @@ You can leave sync.js running without app.js and it will sync and grab blocks ba
 Enabling stats requires running a separate process:
 `node ./tools/stats.js`
 
-Enabling rich list feature requires running a separate process also:
-`python3 richlist_generator.py`
-
 You can configure intervals (how often a new data point is pulled) and range (how many blocks to go back) with the following:
 `RESCAN=1000:100000 node tools/stats.js` (New data point every 1,000 blocks. Go back 100,000 blocks).
