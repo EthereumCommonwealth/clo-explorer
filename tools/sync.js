@@ -244,14 +244,16 @@ const writeTransactionsToDB = async(config, blockData, flush) => {
             return eachCallback(err);
           }
 
-          //data[account].balance = web3.fromWei(balance, 'ether');
-          let ether;
-          if (typeof balance === 'object') {
-            ether = parseFloat(balance.div(1e18).toString());
-          } else {
-            ether /= 1e18;
-          }
-          data[account].balance = ether;
+          data[account].balance = web3.utils.fromWei(balance, 'ether');
+
+          // let ether;
+          //
+          // if (typeof balance === 'object') {
+          //   ether = parseFloat(balance.div(1e18).toString());
+          // } else {
+          //   ether /= 1e18;
+          // }
+          // data[account].balance = ether;
           eachCallback();
         });
       });
