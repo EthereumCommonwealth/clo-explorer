@@ -1,17 +1,21 @@
+body {
+  background-color: #e5e5e5 !important;
+  font-family: 'Roboto', sans-serif; 
+}
 div.page-logo {overflow: visible;}
 img.logo-default {
-    max-height: 150px;
-    height: 100px;
+    max-height: 70px;
+    height: 70px;
 }
 .create{background-color:#36c6d3}
 .truncate-txhash, .truncate-addrhash{
-    white-space:nowrap; 
+    white-space:nowrap;
     overflow:hidden;
     text-overflow: ellipsis;
     max-width:220px;
 }
 .truncate-addrhash {
-    max-width:200px;   
+    max-width:200px;
 }
 .scrollable {
     max-height: 400px;
@@ -20,7 +24,7 @@ img.logo-default {
 }
 #table_txs td, #table_internal_txs td {
     font-size: 12px;
-    white-space:nowrap; 
+    white-space:nowrap;
     overflow:hidden;
     text-overflow: ellipsis;
 }
@@ -53,7 +57,7 @@ img.logo-default {
 }
 .home-tx{
     font-size: 12px;
-    white-space:nowrap; 
+    white-space:nowrap;
     overflow:hidden;
     text-overflow: ellipsis;
 }
@@ -81,7 +85,7 @@ pre {
     word-wrap: break-word;
 }
 pre.code-js, .verified{
-    max-height: 200px; 
+    max-height: 200px;
 }
 .code {
     font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
@@ -109,9 +113,40 @@ li.ng-scope {
     .page-header .page-header-top .menu-toggler {
         margin: 33px 3px 0 0;
     }
+    .search-form {
+      width: 300px;
+    }
+    .top-menu-wrapper {
+      margin-top: 10rem;
+    }
+    .page-header .page-header-top .page-logo {
+      width: 85vw !important;
+    }
+
+    .header-container {
+      display: flex !important;
+      flex-direction: column;
+    }
+
+    .search-form.open {
+      width: 300px;
+    }
+
+    .top-menu-wrapper {
+      flex-direction: column;
+    }
+
+    .page-header-menu {
+      width: 100%;
+    }
 }
+
+.page-header .page-header-menu .hor-menu .navbar-nav {
+  position: relative;
+}
+
 ::-webkit-scrollbar {
-    width: 4px;
+    width: 4p
     height: 6px;
 }
 ::-webkit-scrollbar-button {
@@ -131,3 +166,110 @@ li.ng-scope {
     background-color: transparent;
 }
 .page-spinner-bar{margin-top:-84px;margin-left:-98px;top:50%;left:50%;}
+
+.tx-sucess {
+  color: #34c88a;
+}
+
+.tx-failed {
+  color: red;
+}
+.top-menu-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.header-container {
+  display: grid;
+  grid-template-columns: 1fr 11fr;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.page-header-top {
+  padding: 2rem 0 1rem 0;
+}
+
+.page-header .page-header-top .top-menu {
+  margin: 0;
+}
+
+a {
+  color: #868d95;
+}
+
+a:hover {
+  color: #34c88a;
+}
+
+.page-header .page-header-top .page-logo {
+  left: 24px;
+  height: 70px;
+}
+.
+.dashboard-stat2 {
+  margin-bottom: 0 !important;
+}
+
+.font-green-title {
+  color: #34c88a;
+}
+
+.page-header .page-header-menu .hor-menu .navbar-nav>li.active>a, .page-header .page-header-menu .hor-menu .navbar-nav>li.active>a:hover, .page-header .page-header-menu .hor-menu .navbar-nav>li.current>a, .page-header .page-header-menu .hor-menu .navbar-nav>li.current>a:hover {
+  border-bottom: 4px solid #34c88a !important;
+}
+
+.page-header .page-header-menu .hor-menu.hor-menu-light .navbar-nav>li .dropdown-menu li>a>i {
+  color:  #34c88a !important;
+}
+
+.primary-link {
+  color:  #ff876c;
+}
+
+.dashboard-stat2 .display .icon>i {
+  color: #868D95;
+}
+
+.portlet.light { border-radius: 4px !important;}
+
+.dashboard-stat2 .display .icon {
+  float: left;
+  padding: 0;
+  margin-right: .5rem;
+}
+
+.dashboard-stat2 {
+  border-radius: 4px !important;
+}
+
+.dashboard-stat2 .display { margin-bottom: 0; }
+
+.todo-tasklist-item { background: unset; }
+
+.todo-tasklist-item:hover { background: #f6f6f6 !important; }
+
+.page-header {
+  box-shadow:  0 0 14px 0 rgba(198,202,206,0.3);
+}
+
+.page-header .page-header-menu .hor-menu .navbar-nav>li.current>a, .page-header .page-header-menu .hor-menu .navbar-nav>li>a:hover {
+   border-bottom: solid 2px #34c88a !important;
+   background-color: #577688 !important
+}
+
+::-webkit-scrollbar {
+  width: 4px !important;
+}
+
+.page-prefooter {
+  background: #f2f6f6 !important;
+}
+
+.page-footer {
+  background-color: #FFF !important;
+}
+
+.page-prefooter a, .page-prefooter h2 {
+   color: #34c88a !important;
+}

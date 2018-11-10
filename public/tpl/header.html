@@ -1,243 +1,180 @@
 <!-- BEGIN HEADER TOP -->
 <div class="page-header-top">
-    <div class="container">
+    <div class="header-container container">
     <!-- BEGIN LOGO -->
     <div class="page-logo">
         <a href="/">
-            <img src="/img/explorer-logo.png" alt="logo" class="logo-default" />
+            <img src="/img/logo.svg" alt="logo" class="logo-default" />
         </a>
+        <a href="javascript:;" class="menu-toggler btn btn-sm green-haze btn-outline">MENU</a>
     </div>
     <!-- END LOGO -->
-            <!-- BEGIN RESPONSIVE MENU TOGGLER -->
-        <a href="javascript:;" class="menu-toggler btn btn-sm green-haze btn-outline">MENU</a>
+      <!-- BEGIN RESPONSIVE MENU TOGGLER -->
         <!-- END RESPONSIVE MENU TOGGLER -->
-        <!-- BEGIN TOP NAVIGATION MENU -->
-        <div class="top-menu">
-            <ul class="nav navbar-nav pull-right">
-                <li class="dropdown">
-                    <form name="form.searchForm" class="search-form">
-                        <div class="input-group">
-                            <input type="text" name="explorerSearch" class="form-control" placeholder="Search by Address / Txhash / BlockNum / BlockHash" ng-model="form.searchInput" ng-keyup="$event.keyCode == 13 ? searchQuery(form.searchInput) : null">
-                            <span class="input-group-btn">
-                                <a class="btn" ng-click="searchQuery(form.searchInput)">
-                                    <i class="icon-magnifier"></i>
+
+        <div class="top-menu-wrapper">
+          <!-- BEGIN HEADER MENU -->
+          <div class="page-header-menu">
+              <div class="">
+                <!-- BEGIN MEGA MENU -->
+                <div class="hor-menu hor-menu-light">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a href="/">Home</a>
+                        </li>
+                        <li class="menu-dropdown mega-menu-dropdown ">
+                            <a data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown" href="javascript:;">Stats
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu pull-left">
+                              <li>
+                                  <a href="/stats/hashrate">
+                                      <i class="fa fa-line-chart"></i>
+                                      <span class="title" data-toggle="tooltip" title="Hashrate chart">Hashrate Chart</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="/stats/difficulty">
+                                      <i class="fa fa-line-chart"></i>
+                                      <span class="title" data-toggle="tooltip" title="Difficulty chart">Difficulty Chart</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="/stats/blocktime">
+                                      <i class="fa fa-line-chart"></i>
+                                      <span class="title" data-toggle="tooltip" title="Blocktime chart"> Blocktime Chart</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="/stats/tx">
+                                      <i class="fa fa-line-chart"></i>
+                                      <span class="title" data-toggle="tooltip" title="Transaction  chart"> Transaction Chart</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="/stats/miner_hashrate">
+                                      <i class="fa fa-line-chart"></i>
+                                      <span class="title" data-toggle="tooltip" title="Miner chart">Miner Distribution Chart</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a href="/total" target="_blank">
+                                      <i class="fa fa-line-chart"></i>
+                                      <span class="title" data-toggle="tooltip" title="Total Supply">Total Supply API</span>
+                                  </a>
+                              </li>
+                              <hr>
+                              <li>
+                                <a href="https://stats.callisto.network" target="_blank">
+                                  <i class="fa fa-bar-chart"></i>
+                                  <span class="title" data-toggle="tooltip" title="Mainnet Stats">Live Network Stats</span>
                                 </a>
-                            </span>
-                        </div>
-                    </form>
-                </li>
+                              </li>
+                            </ul>
+                        </li>
+                        <li class="menu-dropdown classic-menu-dropdown ">
+                           <a href="https://ethereumproject.github.io/etherwallet" target="_blank">Web Wallet</a>
+                        </li>
+                        <li class="menu-dropdown classic-menu-dropdown ">
+                           <a href="/accounts" target="_blank">Accounts</a>
+                        </li>
+                        <!-- li class="menu-dropdown classic-menu-dropdown ">
+                            <a data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown" href="javascript:;"> Misc
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu pull-left">
+                                <li>
+                                    <a href="/contract">
+                                        <i class="icon-check"></i> Verify Contract </a>
+                                </li>
+                                <li>
+                                    <a href="/">
+                                        <i class="icon-refresh"></i>
+                                        <span class="title">Broadcast TXN (N/A)</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li -->
+                        <li class="menu-dropdown classic-menu-dropdown ">
+                            <a data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown" href="javascript:;"> Social
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu pull-left">
+                                <li>
+                                  <a href="https://callisto.network" target="_blank">
+                                      <i class="fa fa-home"></i>
+                                      <span class="title" data-toggle="tooltip" title="Homepage"> callisto.network</span>
+                                  </a>
+                                </li>
+                                <hr>
+                                <li>
+                                    <a href="https://twitter.com/CallistoSupport" target="_blank">
+                                        <i class="fa fa-twitter"></i>
+                                        <span class="title" data-toggle="tooltip" title="Callisto Twitter" > CLO Twitter</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://t.me/CallistoNet" target="_blank">
+                                        <i class="fa fa-telegram"></i>
+                                        <span class="title" data-toggle="tooltip" title="Callisto Telegram"> CLO Telegram</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://discordapp.com/invite/fGdPSA2" target="_blank">
+                                        <i class="fa fa-commenting"></i>
+                                        <span class="title" data-toggle="tooltip" title="Community Chat"> CLO Discord</span>
+                                    </a>
+                                </li>
+                                <li>
+                                  <a href="https://www.reddit.com/r/CallistoCrypto" target="_blank">
+                                      <i class="fa fa-reddit"></i>
+                                      <span class="title" data-toggle="tooltip" title="Reddit Forum"> CLO Subreddit</span>
+                                  </a>
+                                </li>
+                                <li>
+                                    <a href="https://bitcointalk.org/index.php?topic=3380156.0" target="_blank">
+                                        <i class="fa fa-btc"></i>
+                                        <span class="title" data-toggle="tooltip" title="Bitcointalk Callisto Announcement"> Bitcointalk ANN</span>
+                                    </a>
+                                </li>
+                                <hr>
+                                <li>
+                                    <a href="https://github.com/EthereumCommonwealth" target="_blank">
+                                        <i class="fa fa-github"></i>
+                                        <span class="title" data-toggle="tooltip" title="Github Development"> CLO Github Repo</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- END MEGA MENU -->
+              </div>
+          </div>
+
+          <!-- BEGIN TOP NAVIGATION MENU -->
+          <div class="top-menu">
+              <ul class="nav navbar-nav pull-right">
+                  <li class="dropdown">
+                      <form name="form.searchForm" class="search-form">
+                          <div class="input-group">
+                              <input type="text" name="explorerSearch" class="form-control" placeholder="Search by Address / Txhash / BlockNum / BlockHash" ng-model="form.searchInput" ng-keyup="$event.keyCode == 13 ? searchQuery(form.searchInput) : null">
+                              <span class="input-group-btn">
+                                  <a class="btn" ng-click="searchQuery(form.searchInput)">
+                                      <i class="icon-magnifier"></i>
+                                  </a>
+                              </span>
+                          </div>
+                      </form>
+                  </li>
 
 
-            </ul>
+              </ul>
+          </div>
+          <!-- END TOP NAVIGATION MENU -->
         </div>
-        <!-- END TOP NAVIGATION MENU -->
     </div>
 </div>
 <!-- END HEADER TOP -->
-<!-- BEGIN HEADER MENU -->
-<div class="page-header-menu">
-    <div class="container">
 
-        <!-- BEGIN MEGA MENU -->
-        <div class="hor-menu hor-menu-light">
-            <ul class="nav navbar-nav">
-                <li class="active">
-                    <a href="/">Home</a>
-                </li>
-                <!-- li class="menu-dropdown mega-menu-dropdown ">
-                    <a data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown" href="/token" class="dropdown-toggle"> Tokens
-                        <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <div class="mega-menu-content">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <ul class="mega-menu-submenu">
-                                            <li>
-                                                <a href="/token" class="iconify">
-                                                    <i class="icon-puzzle"></i> View All Tokens </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="/contract" class="iconify">
-                                                    <i class="icon-check"></i> Verify Contract </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </li -->
-                <!-- li class="menu-dropdown mega-menu-dropdown ">
-                    <a data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown" href="javascript:;" class="dropdown-toggle"> Stats
-                        <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <div class="mega-menu-content">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <ul class="mega-menu-submenu">
-                                            <li>
-                                                <a href="/stats/hashrate">
-                                                    <i class="fa fa-line-chart"></i> HashRate Growth Chart </a>
-                                            </li>
-                                            <li>
-                                                <a href="/stats/miner_hashrate">
-                                                    <i class="fa fa-line-chart"></i> Miner Distribution Chart</a>
-                                            </li>
-                                            <li>
-                                                <a href="/stats/difficulty">
-                                                    <i class="fa fa-line-chart"></i> Difficulty Chart</a>
-                                            </li>
-                                            <li>
-                                                <a href="/stats/blocktime">
-                                                    <i class="fa fa-line-chart"></i> Blocktime Chart</a>
-                                            </li>
-                                            <li>
-                                                <a href="/stats/tx">
-                                                    <i class="fa fa-line-chart"></i> Transaction Chart</a>
-                                            </li>
-                                            <li>
-                                                <a href="/stats/The_bomb_chart">
-                                                    <i class="fa fa-line-chart"></i> The bomb chart</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </li -->
-                <li class="menu-dropdown mega-menu-dropdown ">
-                    <a data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown" href="javascript:;">Stats
-                        <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="dropdown-menu pull-left">
-                      <li>
-                          <a href="/stats/hashrate">
-                              <i class="fa fa-line-chart"></i>
-                              <span class="title" data-toggle="tooltip" title="Hashrate chart">Hashrate Chart</span>
-                          </a>
-                      </li>
-                      <li>
-                          <a href="/stats/difficulty">
-                              <i class="fa fa-line-chart"></i>
-                              <span class="title" data-toggle="tooltip" title="Difficulty chart">Difficulty Chart</span>
-                          </a>
-                      </li>
-                      <li>
-                          <a href="/stats/blocktime">
-                              <i class="fa fa-line-chart"></i>
-                              <span class="title" data-toggle="tooltip" title="Blocktime chart"> Blocktime Chart</span>
-                          </a>
-                      </li>
-                      <li>
-                          <a href="/stats/tx">
-                              <i class="fa fa-line-chart"></i>
-                              <span class="title" data-toggle="tooltip" title="Transaction  chart"> Transaction Chart</span>
-                          </a>
-                      </li>
-                      <li>
-                          <a href="/stats/miner_hashrate">
-                              <i class="fa fa-line-chart"></i>
-                              <span class="title" data-toggle="tooltip" title="Miner chart">Miner Distribution Chart</span>
-                          </a>
-                      </li>
-                      <li>
-                          <a href="/total" target="_blank">
-                              <i class="fa fa-line-chart"></i>
-                              <span class="title" data-toggle="tooltip" title="Total Supply">Total Supply API</span>
-                          </a>
-                      </li>
-                      <hr>
-                      <li>
-                        <a href="https://stats.callisto.network" target="_blank">
-                          <i class="fa fa-bar-chart"></i>
-                          <span class="title" data-toggle="tooltip" title="Mainnet Stats">Live Network Stats</span>
-                        </a>
-                      </li>
-                    </ul>
-                </li>
-                <li class="menu-dropdown classic-menu-dropdown ">
-                   <a href="https://ethereumproject.github.io/etherwallet" target="_blank">Web Wallet</a>
-                </li>
-                <li class="menu-dropdown classic-menu-dropdown ">
-                   <a href="/accounts" target="_blank">Accounts</a>
-                </li>
-                <!-- li class="menu-dropdown classic-menu-dropdown ">
-                    <a data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown" href="javascript:;"> Misc
-                        <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="dropdown-menu pull-left">
-                        <li>
-                            <a href="/contract">
-                                <i class="icon-check"></i> Verify Contract </a>
-                        </li>
-                        <li>
-                            <a href="/">
-                                <i class="icon-refresh"></i>
-                                <span class="title">Broadcast TXN (N/A)</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li -->
-                <li class="menu-dropdown classic-menu-dropdown ">
-                    <a data-hover="megamenu-dropdown" data-close-others="true" data-toggle="dropdown" href="javascript:;"> Social
-                        <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="dropdown-menu pull-left">
-                        <li>
-                          <a href="https://callisto.network" target="_blank">
-                              <i class="fa fa-home"></i>
-                              <span class="title" data-toggle="tooltip" title="Homepage"> callisto.network</span>
-                          </a>
-                        </li>
-                        <hr>
-                        <li>
-                            <a href="https://twitter.com/CallistoSupport" target="_blank">
-                                <i class="fa fa-twitter"></i>
-                                <span class="title" data-toggle="tooltip" title="Callisto Twitter" > CLO Twitter</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://t.me/CallistoNet" target="_blank">
-                                <i class="fa fa-telegram"></i>
-                                <span class="title" data-toggle="tooltip" title="Callisto Telegram"> CLO Telegram</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://discordapp.com/invite/fGdPSA2" target="_blank">
-                                <i class="fa fa-commenting"></i>
-                                <span class="title" data-toggle="tooltip" title="Community Chat"> CLO Discord</span>
-                            </a>
-                        </li>
-                        <li>
-                          <a href="https://www.reddit.com/r/CallistoCrypto" target="_blank">
-                              <i class="fa fa-reddit"></i>
-                              <span class="title" data-toggle="tooltip" title="Reddit Forum"> CLO Subreddit</span>
-                          </a>
-                        </li>
-                        <li>
-                            <a href="https://bitcointalk.org/index.php?topic=3380156.0" target="_blank">
-                                <i class="fa fa-btc"></i>
-                                <span class="title" data-toggle="tooltip" title="Bitcointalk Callisto Announcement"> Bitcointalk ANN</span>
-                            </a>
-                        </li>
-                        <hr>
-                        <li>
-                            <a href="https://github.com/EthereumCommonwealth" target="_blank">
-                                <i class="fa fa-github"></i>
-                                <span class="title" data-toggle="tooltip" title="Github Development"> CLO Github Repo</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <!-- END MEGA MENU -->
-    </div>
-</div>
 <!-- END HEADER INNER -->

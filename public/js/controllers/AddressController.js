@@ -31,7 +31,7 @@ angular.module('BlocksApp').controller('AddressController', function($stateParam
       fetchInternalTxs();
     });
 
-    // fetch ethf balance 
+    // fetch ethf balance
     if ($scope.settings.useEthFiat)
     $http({
       method: 'POST',
@@ -84,7 +84,7 @@ angular.module('BlocksApp').controller('AddressController', function($stateParam
                     [10, 20, 50, 100, 150, 500],
                     [10, 20, 50, 100, 150, 500] // change per page values here
                 ],
-        "pageLength": 20, 
+        "pageLength": 20,
         "order": [
             [6, "desc"]
         ],
@@ -94,7 +94,7 @@ angular.module('BlocksApp').controller('AddressController', function($stateParam
           "infoEmpty": ":(",
           "infoFiltered": "(filtered from _MAX_ total txs)"
         },
-        "columnDefs": [ 
+        "columnDefs": [
           { "targets": [ 5 ], "visible": false, "searchable": false },
           {"type": "date", "targets": 6},
           {"orderable": false, "targets": [0,2,3,4]},
@@ -146,10 +146,10 @@ angular.module('BlocksApp').controller('AddressController', function($stateParam
         } else {
           $scope.internal_transactions = resp.data;
         }
-      });      
+      });
     };
     $scope.fetchInternalTxs = fetchInternalTxs;
-    
+
 })
 .directive('contractSource', function($http) {
   return {

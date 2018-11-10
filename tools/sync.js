@@ -9,7 +9,7 @@ var etherUnits = require("../lib/etherUnits.js");
 var BigNumber = require('bignumber.js');
 var _ = require('lodash');
 
-var async = require('async');
+var asyncL = require('async');
 
 var Web3 = require('web3');
 
@@ -18,7 +18,7 @@ var Block           = mongoose.model( 'Block' );
 var Transaction     = mongoose.model( 'Transaction' );
 var Account         = mongoose.model( 'Account' );
 
-function normalizeTX(txData, blockData) {
+const normalizeTX = async (txData, blockData) => {
   var tx = {
     blockHash: txData.blockHash,
     blockNumber: txData.blockNumber,
@@ -31,19 +31,30 @@ function normalizeTX(txData, blockData) {
     s: txData.s,
     v: txData.v,
     gas: txData.gas,
+    gasUsed: 0,
     gasPrice: txData.gasPrice,
     input: txData.input,
     transactionIndex: txData.transactionIndex,
-    timestamp: blockData.timestamp
+    timestamp: blockData.timestamp,
+    status: 0
   };
+  // getTransactionReceipt to get contract address and more data
+
+  let receipt;
+  try {
+    receipt = await web3.eth.getTransactionReceipt(tx.hash)
+  } catch(err) {
+    console.log('Error', err);
+  }
+  tx.gasUsed = receipt.gasUsed;
+  tx.status = receipt.status;
+
   if (txData.to == null) {
     // parity support `creates` field
     if (txData.creates) {
       tx.creates = txData.creates;
       return tx;
     } else {
-      // getTransactionReceipt to get contract address
-      var receipt = web3.eth.getTransactionReceipt(tx.hash);
       if (receipt && receipt.contractAddress) {
         tx.creates = receipt.contractAddress;
       }
@@ -58,37 +69,30 @@ function normalizeTX(txData, blockData) {
   //Just listen for latest blocks and sync from the start of the app.
 **/
 var listenBlocks = function(config) {
-    var newBlocks = web3.eth.filter("latest");
-    newBlocks.watch(function (error,latestBlock) {
-    if(error) {
-        console.log('Error: ' + error);
-    } else if (latestBlock == null) {
-        console.log('Warning: null block hash');
-    } else {
-      console.log('Found new block: ' + latestBlock);
-      if(web3.isConnected()) {
-        web3.eth.getBlock(latestBlock, true, function(error,blockData) {
-          if(error) {
-            console.log('Warning: error on getting block with hash/number: ' +   latestBlock + ': ' + error);
-          }else if(blockData == null) {
-            console.log('Warning: null block data received from the block with hash/number: ' + latestBlock);
-          }else{
-            writeBlockToDB(config, blockData, true);
-            writeTransactionsToDB(config, blockData, true);
-          }
-        });
-      }else{
-        console.log('Error: Web3 connection time out trying to get block ' + latestBlock + ' retrying connection now');
-        listenBlocks(config);
+    var newBlocks = web3.eth.subscribe('newBlockHeaders', function(error, result){
+      if (!error) {
+          return;
       }
-    }
-  });
+
+      console.error(error);
+    });
+    newBlocks.on("data", function (blockHeader) {
+      web3.eth.getBlock(blockHeader.hash, true, function(error, blockData) {
+        if (blockHeader == null) {
+          console.log('Warning: null block hash');
+        } else {
+          writeBlockToDB(config, blockData, true);
+          writeTransactionsToDB(config, blockData, true);
+        }
+      });
+    });
+    newBlocks.on("error", console.error);
 }
 /**
   If full sync is checked this function will start syncing the block chain from lastSynced param see README
 **/
 var syncChain = function(config, nextBlock){
-  if(web3.isConnected()) {
+  if(web3.eth.net.isListening()) {
     if (typeof nextBlock === 'undefined') {
       prepareSync(config, function(error, startBlock) {
         if(error) {
@@ -115,7 +119,7 @@ var syncChain = function(config, nextBlock){
     while(nextBlock >= config.startBlock && count > 0) {
       web3.eth.getBlock(nextBlock, true, function(error,blockData) {
         if(error) {
-          console.log('Warning: error on getting block with hash/number: ' + nextBlock + ': ' + error);
+          console.log('Warning (syncChain): error on getting block with hash/number: ' + nextBlock + ': ' + error);
         }else if(blockData == null) {
           console.log('Warning: null block data received from the block with hash/number: ' + nextBlock);
         }else{
@@ -170,7 +174,7 @@ var writeBlockToDB = function(config, blockData, flush) {
 /**
   Break transactions out of blocks and write to DB
 **/
-var writeTransactionsToDB = function(config, blockData, flush) {
+const writeTransactionsToDB = async(config, blockData, flush) => {
   var self = writeTransactionsToDB;
   if (!self.bulkOps) {
     self.bulkOps = [];
@@ -187,7 +191,7 @@ var writeTransactionsToDB = function(config, blockData, flush) {
     for (d in blockData.transactions) {
       var txData = blockData.transactions[d];
 
-      var tx = normalizeTX(txData, blockData);
+      var tx = await normalizeTX(txData, blockData);
       self.bulkOps.push(tx);
     }
     console.log('\t- block #' + blockData.number.toString() + ': ' + blockData.transactions.length.toString() + ' transactions recorded.');
@@ -221,7 +225,7 @@ var writeTransactionsToDB = function(config, blockData, flush) {
 
     // update balances
     if (accounts.length > 0)
-    async.eachSeries(accounts, function(account, eachCallback) {
+    asyncL.eachSeries(accounts, function(account, eachCallback) {
       var blockNumber = data[account].blockNumber;
       // get contract account type
       web3.eth.getCode(account, function(err, code) {
@@ -235,6 +239,7 @@ var writeTransactionsToDB = function(config, blockData, flush) {
 
         web3.eth.getBalance(account, blockNumber, function(err, balance) {
           if (err) {
+            console.log(err);
             console.log("ERROR: fail to getBalance(" + account + ")");
             return eachCallback(err);
           }
@@ -284,19 +289,19 @@ var writeTransactionsToDB = function(config, blockData, flush) {
 /**
   //check oldest block or starting block then callback
 **/
-var prepareSync = function(config, callback) {
+const prepareSync = async (config, callback) => {
   var blockNumber = null;
   var oldBlockFind = Block.find({}, "number").lean(true).sort('number').limit(1);
-  oldBlockFind.exec(function (err, docs) {
+  oldBlockFind.exec(async (err, docs) => {
     if(err || !docs || docs.length < 1) {
       // not found in db. sync from config.endBlock or 'latest'
-      if(web3.isConnected()) {
-        var currentBlock = web3.eth.blockNumber;
+      if(web3.eth.net.isListening()) {
+        var currentBlock = await web3.eth.getBlockNumber();
         var latestBlock = config.endBlock || currentBlock || 'latest';
         if(latestBlock === 'latest') {
           web3.eth.getBlock(latestBlock, true, function(error, blockData) {
             if(error) {
-              console.log('Warning: error on getting block with hash/number: ' +   latestBlock + ': ' + error);
+              console.log('Warning (prepareSync): error on getting block with hash/number: ' +   latestBlock + ': ' + error);
             } else if(blockData == null) {
               console.log('Warning: null block data received from the block with hash/number: ' + latestBlock);
             } else {
@@ -324,8 +329,8 @@ var prepareSync = function(config, callback) {
 /**
   Block Patcher(experimental)
 **/
-var runPatcher = function(config, startBlock, endBlock) {
-  if(!web3 || !web3.isConnected()) {
+const runPatcher = async (config, startBlock, endBlock) => {
+  if(!web3 || !web3.eth.net.isListening()) {
     console.log('Error: Web3 is not connected. Retrying connection shortly...');
     setTimeout(function() { runPatcher(config); }, 3000);
     return;
@@ -334,7 +339,7 @@ var runPatcher = function(config, startBlock, endBlock) {
   if(typeof startBlock === 'undefined' || typeof endBlock === 'undefined') {
     // get the last saved block
     var blockFind = Block.find({}, "number").lean(true).sort('-number').limit(1);
-    blockFind.exec(function (err, docs) {
+    blockFind.exec(async (err, docs) => {
       if(err || !docs || docs.length < 1) {
         // no blocks found. terminate runPatcher()
         console.log('No need to patch blocks.');
@@ -342,7 +347,7 @@ var runPatcher = function(config, startBlock, endBlock) {
       }
 
       var lastMissingBlock = docs[0].number + 1;
-      var currentBlock = web3.eth.blockNumber;
+      var currentBlock = await web3.eth.getBlockNumber();
       runPatcher(config, lastMissingBlock, currentBlock - 1);
     });
     return;
@@ -423,7 +428,8 @@ try {
 console.log('Connecting ' + config.nodeAddr + ':' + config.gethPort + '...');
 
 // Sets address for RPC WEB3 to connect to, usually your node IP address defaults ot localhost
-var web3 = new Web3(new Web3.providers.HttpProvider('http://' + config.nodeAddr + ':' + config.gethPort.toString()));
+//var web3 = new Web3(new Web3.providers.HttpProvider('http://' + config.nodeAddr + ':' + config.gethPort.toString()));
+var web3 = new Web3(new Web3.providers.WebsocketProvider('ws://' + config.nodeAddr + ':8546'));
 
 // patch missing blocks
 if (config.patch === true){

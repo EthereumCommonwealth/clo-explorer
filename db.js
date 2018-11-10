@@ -56,9 +56,11 @@ var Transaction = new Schema(
     "creates": String,
     "value": String,
     "gas": Number,
+    "gasUsed": Number,
     "gasPrice": String,
     "timestamp": Number,
-    "input": String
+    "input": String,
+    "status": Number
 }, {collection: "Transaction"});
 
 var BlockStat = new Schema(

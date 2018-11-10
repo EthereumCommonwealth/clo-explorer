@@ -68,57 +68,59 @@ console.log('Connecting ' + config.nodeAddr + ':' + config.gethPort + '...');
 if (typeof web3 !== "undefined") {
   web3 = new Web3(web3.currentProvider);
 } else {
-  web3 = new Web3(new Web3.providers.HttpProvider('http://'+config.nodeAddr+':'+config.gethPort));
+  web3 = new Web3(new Web3.providers.WebsocketProvider('ws://' + config.nodeAddr + ':8546'));
 }
 
-if (web3.isConnected())
+if (web3.eth.net.isListening())
   console.log("Web3 connection established");
 else
   throw "No connection, please specify web3host in conf.json";
 
-if (web3.version.node.split('/')[0].toLowerCase().includes('parity')) {
-  // parity extension
-  web3 = require("../lib/trace.js")(web3);
-}
+web3 = require("../lib/trace.js")(web3);
 
-var newBlocks = web3.eth.filter("latest");
-var newTxs = web3.eth.filter("pending");
+// var newBlocks = web3.eth.filter("latest");
+// var newTxs = web3.eth.filter("pending");
 
-exports.data = function(req, res){
-  console.log(req.body)
-
+exports.data = async (req, res) => {
   if ("tx" in req.body) {
     var txHash = req.body.tx.toLowerCase();
 
-    web3.eth.getTransaction(txHash, function(err, tx) {
-      if(err || !tx) {
-        console.error("TxWeb3 error :" + err)
-        if (!tx) {
-          web3.eth.getBlock(txHash, function(err, block) {
-            if(err || !block) {
-              console.error("BlockWeb3 error :" + err)
-              res.write(JSON.stringify({"error": true}));
+    Transaction.findOne({hash: txHash}).lean(true).exec(function(err, doc) {
+      if (err || !doc) {
+        web3.eth.getTransaction(txHash, function(err, tx) {
+          if(err || !tx) {
+            console.error("TxWeb3 error :" + err)
+            if (!tx) {
+              web3.eth.getBlock(txHash, function(err, block) {
+                if(err || !block) {
+                  console.error("BlockWeb3 error :" + err)
+                  res.write(JSON.stringify({"error": true}));
+                } else {
+                  console.log("BlockWeb3 found: " + txHash)
+                  res.write(JSON.stringify({"error": true, "isBlock": true}));
+                }
+                res.end();
+              });
             } else {
-              console.log("BlockWeb3 found: " + txHash)
-              res.write(JSON.stringify({"error": true, "isBlock": true}));
+              res.write(JSON.stringify({"error": true}));
+              res.end();
             }
-            res.end();
-          });
-        } else {
-          res.write(JSON.stringify({"error": true}));
-          res.end();
-        }
-      } else {
-        var ttx = tx;
-        ttx.value = etherUnits.toEther( new BigNumber(tx.value), "wei");
-        //get timestamp from block
-        var block = web3.eth.getBlock(tx.blockNumber, function(err, block) {
-          if (!err && block)
-            ttx.timestamp = block.timestamp;
-          ttx.isTrace = (ttx.input != "0x");
-          res.write(JSON.stringify(ttx));
-          res.end();
+          } else {
+            var ttx = tx;
+            ttx.value = etherUnits.toEther( new BigNumber(tx.value), "wei");
+            //get timestamp from block
+            var block = web3.eth.getBlock(tx.blockNumber, function(err, block) {
+              if (!err && block)
+                ttx.timestamp = block.timestamp;
+              ttx.isTrace = (ttx.input != "0x");
+              res.write(JSON.stringify(ttx));
+              res.end();
+            });
+          }
         });
+      } else {
+        res.write(JSON.stringify(doc));
+        res.end();
       }
     });
 
@@ -335,7 +337,7 @@ exports.data = function(req, res){
         // search selected token contract only
         toAddr = [addr];
       }
-      var filter = {"fromBlock": web3.toHex(fromBlock), "toAddress":toAddr};
+      var filter = {"fromBlock": web3.utils.toHex(fromBlock), "toAddress":toAddr};
       filter.count = MAX_ENTRIES;
       if (after) {
         filter.after = after;
@@ -421,7 +423,7 @@ exports.data = function(req, res){
 
     if (options.indexOf("balance") > -1) {
       try {
-        addrData["balance"] = web3.eth.getBalance(addr);
+        addrData["balance"] = await web3.eth.getBalance(addr);
         addrData["balance"] = etherUnits.toEther(addrData["balance"], 'wei');
       } catch(err) {
         console.error("AddrWeb3 error :" + err);

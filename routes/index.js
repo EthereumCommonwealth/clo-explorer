@@ -9,7 +9,6 @@ var async = require('async');
 module.exports = function(app){
   var web3relay = require('./web3relay');
 
-  var DAO = require('./dao');
   var Token = require('./token');
 
   var compile = require('./compiler');
@@ -31,7 +30,6 @@ module.exports = function(app){
   app.post('/data', getData);
   app.get('/total', getTotal);
 
-  app.post('/daorelay', DAO);
   app.post('/tokenrelay', Token);
   app.post('/web3relay', web3relay.data);
   app.post('/compile', compile);
@@ -123,11 +121,13 @@ var getBlock = function(req, res) {
     res.end();
   });
 };
+
 var getTx = function(req, res){
   var tx = req.body.tx.toLowerCase();
   var txFind = Block.findOne( { "transactions.hash" : tx }, "transactions timestamp")
                   .lean(true);
   txFind.exec(function (err, doc) {
+    console.log("Document", doc)
     if (!doc){
       console.log("missing: " +tx)
       res.write(JSON.stringify({}));
