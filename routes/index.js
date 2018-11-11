@@ -38,7 +38,7 @@ module.exports = function(app){
   app.post('/stats', stats);
 }
 
-var getAddr = function(req, res){
+const getAddr = async (req, res) => {
   // TODO: validate addr and tx
   var addr = req.body.addr.toLowerCase();
   var count = parseInt(req.body.count);
@@ -60,15 +60,14 @@ var getAddr = function(req, res){
     }
   }
 
-  addrFind.lean(true).sort(sortOrder).skip(start).limit(limit)
-    .exec("find", function (err, docs) {
+  addrFind.lean(true).sort(sortOrder).skip(start).limit(limit).exec("find", function (err, docs) {
       if (docs)
         data.data = filters.filterTX(docs, addr);
       else
         data.data = [];
       res.write(JSON.stringify(data));
       res.end();
-    });
+  });
 
 };
 var getAddrCounter = function(req, res) {

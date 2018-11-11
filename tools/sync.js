@@ -22,8 +22,8 @@ const normalizeTX = async (txData, blockData) => {
   var tx = {
     blockHash: txData.blockHash,
     blockNumber: txData.blockNumber,
-    from: txData.from,
-    to: txData.to,
+    from: txData.from.toLowerCase(),
+    to: txData.to.toLowerCase(),
     hash: txData.hash,
     value: etherUnits.toEther(new BigNumber(txData.value), 'wei'),
     nonce: txData.nonce,

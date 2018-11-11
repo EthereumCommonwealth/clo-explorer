@@ -8,7 +8,7 @@ var mongoose        = require( 'mongoose' );
 var Block           = mongoose.model( 'Block' );
 var Transaction     = mongoose.model( 'Transaction' );
 
-function normalizeTX(txData, blockData) {
+const normalizeTX = async (txData, blockData) => {
   var tx = {
     blockHash: txData.blockHash,
     blockNumber: txData.blockNumber,
@@ -21,19 +21,30 @@ function normalizeTX(txData, blockData) {
     s: txData.s,
     v: txData.v,
     gas: txData.gas,
+    gasUsed: 0,
     gasPrice: txData.gasPrice,
     input: txData.input,
     transactionIndex: txData.transactionIndex,
-    timestamp: blockData.timestamp
+    timestamp: blockData.timestamp,
+    status: 0
   };
+  // getTransactionReceipt to get contract address and more data
+
+  let receipt;
+  try {
+    receipt = await web3.eth.getTransactionReceipt(tx.hash)
+  } catch(err) {
+    console.log('Error', err);
+  }
+  tx.gasUsed = receipt.gasUsed;
+  tx.status = receipt.status;
+
   if (txData.to == null) {
     // parity support `creates` field
     if (txData.creates) {
       tx.creates = txData.creates;
       return tx;
     } else {
-      // getTransactionReceipt to get contract address
-      var receipt = web3.eth.getTransactionReceipt(tx.hash);
       if (receipt && receipt.contractAddress) {
         tx.creates = receipt.contractAddress;
       }
@@ -51,7 +62,7 @@ var grabBlock = function(config, web3, blockHashOrNumber) {
         return;
     }
     desiredBlockHashOrNumber = blockHashOrNumber;
-    if(web3.isConnected()) {
+    if(web3.eth.net.isListening()) {
         web3.eth.getBlock(desiredBlockHashOrNumber, true, function(error, blockData) {
             if(error) {
                 console.log('Warning: error on getting block with hash/number: ' +

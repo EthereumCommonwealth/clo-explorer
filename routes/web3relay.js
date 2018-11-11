@@ -10,7 +10,7 @@ var web3;
 var _ = require('lodash');
 var BigNumber = require('bignumber.js');
 var etherUnits = require(__lib + "etherUnits.js")
-var async = require('async');
+var asyncL = require('async');
 var abiDecoder = require('abi-decoder');
 
 require( '../db.js' );
@@ -127,7 +127,7 @@ exports.data = async (req, res) => {
   } else if ("tx_trace" in req.body) {
     var txHash = req.body.tx_trace.toLowerCase();
 
-    async.waterfall([
+    asyncL.waterfall([
     function(callback) {
       web3.eth.getTransaction(txHash, function(err, tx) {
         if(err || !tx) {
@@ -247,14 +247,14 @@ exports.data = async (req, res) => {
 
     var txncount;
     try {
-      txncount = web3.eth.getTransactionCount(addr);
+      txncount = await web3.eth.getTransactionCount(addr);
     } catch (e) {
       console.log("No transaction found. ignore.");
       res.write(JSON.stringify({"error": true}));
       res.end();
       return;
     }
-    async.waterfall([
+    asyncL.waterfall([
       function(callback) {
         // get the creation transaction.
         Transaction.findOne({creates: addr}).lean(true).exec(function(err, doc) {
@@ -432,7 +432,7 @@ exports.data = async (req, res) => {
     }
     if (options.indexOf("count") > -1) {
       try {
-         addrData["count"] = web3.eth.getTransactionCount(addr);
+         addrData["count"] = await web3.eth.getTransactionCount(addr);
       } catch (err) {
         console.error("AddrWeb3 error :" + err);
         addrData = {"error": true};
@@ -440,7 +440,7 @@ exports.data = async (req, res) => {
     }
     if (options.indexOf("bytecode") > -1) {
       try {
-         addrData["bytecode"] = web3.eth.getCode(addr);
+         addrData["bytecode"] = await web3.eth.getCode(addr);
          if (addrData["bytecode"].length > 2)
             addrData["isContract"] = true;
          else
@@ -452,7 +452,7 @@ exports.data = async (req, res) => {
 
       // is it a ERC20 compatible token?
       if (addrData["isContract"]) {
-        var contract = web3.eth.contract(ERC20ABI);
+        var contract = awaiweb3.eth.contract(ERC20ABI);
         var token = contract.at(addr);
 
         try {
@@ -468,8 +468,6 @@ exports.data = async (req, res) => {
 
     res.write(JSON.stringify(addrData));
     res.end();
-
-
   } else if ("block" in req.body) {
     var blockNumOrHash;
     if (/^(0x)?[0-9a-f]{64}$/i.test(req.body.block.trim())) {

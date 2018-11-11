@@ -46,14 +46,14 @@ var Contract = new Schema(
 
 var Transaction = new Schema(
 {
-    "hash": {type: String, index: {unique: true}},
+    "hash": {type: String, index: {unique: true}, lowercase: true},
     "nonce": Number,
     "blockHash": String,
     "blockNumber": Number,
     "transactionIndex": Number,
-    "from": String,
-    "to": String,
-    "creates": String,
+    "from": {type: String, lowercase: true},
+    "to": {type: String, lowercase: true},
+    "creates": {type: String, lowercase: true},
     "value": String,
     "gas": Number,
     "gasUsed": Number,
