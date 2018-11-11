@@ -478,7 +478,8 @@ exports.data = async (req, res) => {
     } else {
         blockNumOrHash = parseInt(req.body.block);
     }
-    Block.findOne({$or: [{hash: blockNumOrHash}, {number: blockNumOrHash}]}).lean(true).exec("findOne", function(err, doc) {
+    Block.findOne({$or: [{hash: blockNumOrHash}, {number: blockNumOrHash}]},
+      { '_id': 0 }).lean(true).exec("findOne", function(err, doc) {
       if (err || !doc) {
         web3.eth.getBlock(blockNumOrHash, function(err, block) {
           if(err || !block) {
@@ -490,8 +491,11 @@ exports.data = async (req, res) => {
           res.end();
         });
       } else {
-        res.write(JSON.stringify(doc));
-        res.end();
+        Transaction.find({blockNumber: doc.number}).distinct("hash", (err, txs) => {
+          doc["transactions"] = txs;
+          res.write(JSON.stringify(filterBlocks(doc)));
+          res.end();
+        });
       }
     });
 
