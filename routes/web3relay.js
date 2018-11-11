@@ -15,6 +15,7 @@ var abiDecoder = require('abi-decoder');
 
 require( '../db.js' );
 var mongoose = require( 'mongoose' );
+var Block     = mongoose.model( 'Block' );
 var Contract = mongoose.model( 'Contract' );
 var Transaction = mongoose.model( 'Transaction' );
 
@@ -84,7 +85,6 @@ web3 = require("../lib/trace.js")(web3);
 // var newTxs = web3.eth.filter("pending");
 
 exports.data = async (req, res) => {
-  debugger;
   if ("tx" in req.body) {
     var txHash = req.body.tx.toLowerCase();
 
@@ -478,7 +478,7 @@ exports.data = async (req, res) => {
     } else {
         blockNumOrHash = parseInt(req.body.block);
     }
-    Block.findOne({$or: [{hash: blockNumOrHash}, {number: blockNumOrHash}]}).lean(true).exec(function(err, doc) {
+    Block.findOne({$or: [{hash: blockNumOrHash}, {number: blockNumOrHash}]}).lean(true).exec("findOne", function(err, doc) {
       if (err || !doc) {
         web3.eth.getBlock(blockNumOrHash, function(err, block) {
           if(err || !block) {
