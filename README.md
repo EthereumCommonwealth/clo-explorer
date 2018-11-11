@@ -1,14 +1,12 @@
 # Callisto Explorer
 
-[![Build Status](https://travis-ci.org/chainkorea/clo-explorer.svg?branch=master)](https://travis-ci.org/chainkorea/clo-explorer)
-
-<b>Live Version: [cloexplorer.org](https://cloexplorer.org)</b>
+<b>Live Version: [cloexplorer.org](https://explorer2.callisto.network)</b>
 
 ## Local installation
 
 Clone the repo
 
-`git clone https://github.com/chainkorea/clo-explorer`
+`git clone https://github.com/EthereumCommonwealth/clo-explorerr`
 
 Download [Nodejs and npm](https://docs.npmjs.com/getting-started/installing-node "Nodejs install") if you don't have them
 
