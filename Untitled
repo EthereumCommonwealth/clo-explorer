@@ -1,9 +1,0 @@
-{
-  "apps" : [{
-    "name"       : "Callisto",
-    "script"     : "/home/callisto/parity-ethereum/target/release/parity",
-    "args"   : "--chain callisto --max-peers=300 --pruning=archive --fat-db=on --tracing=on --cache-size=4096 --cache-size-blocks=128 --cache-size-db=4096 --num-verifiers=8",
-    "exec_interpreter": "none",
-    "exec_mode"  : "fork_mode"
-  }]
-}

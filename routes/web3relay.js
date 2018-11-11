@@ -452,7 +452,7 @@ exports.data = async (req, res) => {
 
       // is it a ERC20 compatible token?
       if (addrData["isContract"]) {
-        var contract = awaiweb3.eth.contract(ERC20ABI);
+        var contract = await web3.eth.contract(ERC20ABI);
         var token = contract.at(addr);
 
         try {
