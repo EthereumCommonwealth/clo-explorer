@@ -71,6 +71,8 @@ if (typeof web3 !== "undefined") {
   web3 = new Web3(new Web3.providers.WebsocketProvider('ws://' + config.nodeAddr + ':8546'));
 }
 
+web3Addr = new Web3(new Web3.providers.HttpProvider('https://clo-geth.0xinfra.com'));
+
 if (web3.eth.net.isListening())
   console.log("Web3 connection established");
 else
@@ -82,6 +84,7 @@ web3 = require("../lib/trace.js")(web3);
 // var newTxs = web3.eth.filter("pending");
 
 exports.data = async (req, res) => {
+  debugger;
   if ("tx" in req.body) {
     var txHash = req.body.tx.toLowerCase();
 
@@ -247,7 +250,7 @@ exports.data = async (req, res) => {
 
     var txncount;
     try {
-      txncount = await web3.eth.getTransactionCount(addr);
+      txncount = await web3Addr.eth.getTransactionCount(addr);
     } catch (e) {
       console.log("No transaction found. ignore.");
       res.write(JSON.stringify({"error": true}));
@@ -270,9 +273,9 @@ exports.data = async (req, res) => {
       function(transaction, callback) {
         // detect Token contract
         if (transaction) {
-          var bytecode = web3.eth.getCode(addr);
+          var bytecode = web3Addr.eth.getCode(addr);
           if (bytecode.length > 2) {
-            var contract = web3.eth.contract(ERC20ABI);
+            var contract = web3Addr.eth.contract(ERC20ABI);
             var token = contract.at(addr);
 
             try {
@@ -423,7 +426,7 @@ exports.data = async (req, res) => {
 
     if (options.indexOf("balance") > -1) {
       try {
-        addrData["balance"] = await web3.eth.getBalance(addr);
+        addrData["balance"] = await web3Addr.eth.getBalance(addr);
         addrData["balance"] = etherUnits.toEther(addrData["balance"], 'wei');
       } catch(err) {
         console.error("AddrWeb3 error :" + err);
@@ -432,7 +435,7 @@ exports.data = async (req, res) => {
     }
     if (options.indexOf("count") > -1) {
       try {
-         addrData["count"] = await web3.eth.getTransactionCount(addr);
+         addrData["count"] = await web3Addr.eth.getTransactionCount(addr);
       } catch (err) {
         console.error("AddrWeb3 error :" + err);
         addrData = {"error": true};
@@ -440,7 +443,7 @@ exports.data = async (req, res) => {
     }
     if (options.indexOf("bytecode") > -1) {
       try {
-         addrData["bytecode"] = await web3.eth.getCode(addr);
+         addrData["bytecode"] = await web3Addr.eth.getCode(addr);
          if (addrData["bytecode"].length > 2)
             addrData["isContract"] = true;
          else
@@ -451,19 +454,19 @@ exports.data = async (req, res) => {
       }
 
       // is it a ERC20 compatible token?
-      if (addrData["isContract"]) {
-        var contract = await web3.eth.contract(ERC20ABI);
-        var token = contract.at(addr);
-
-        try {
-          // FIXME
-          var supply = token.totalSupply();
-          addrData["isTokenContract"] = true;
-        } catch (e) {
-          // not a valid token
-          addrData["isTokenContract"] = false;
-        }
-      }
+      // if (addrData["isContract"]) {
+      //   var contract = await web3Addr.eth.contract(ERC20ABI);
+      //   var token = contract.at(addr);
+      //
+      //   try {
+      //     // FIXME
+      //     var supply = token.totalSupply();
+      //     addrData["isTokenContract"] = true;
+      //   } catch (e) {
+      //     // not a valid token
+      //     addrData["isTokenContract"] = false;
+      //   }
+      // }
     }
 
     res.write(JSON.stringify(addrData));
@@ -475,15 +478,21 @@ exports.data = async (req, res) => {
     } else {
         blockNumOrHash = parseInt(req.body.block);
     }
-
-    web3.eth.getBlock(blockNumOrHash, function(err, block) {
-      if(err || !block) {
-        console.error("BlockWeb3 error :" + err)
-        res.write(JSON.stringify({"error": true}));
+    Block.findOne({$or: [{hash: blockNumOrHash}, {number: blockNumOrHash}]}).lean(true).exec(function(err, doc) {
+      if (err || !doc) {
+        web3.eth.getBlock(blockNumOrHash, function(err, block) {
+          if(err || !block) {
+            console.error("BlockWeb3 error :" + err)
+            res.write(JSON.stringify({"error": true}));
+          } else {
+            res.write(JSON.stringify(filterBlocks(block)));
+          }
+          res.end();
+        });
       } else {
-        res.write(JSON.stringify(filterBlocks(block)));
+        res.write(JSON.stringify(doc));
+        res.end();
       }
-      res.end();
     });
 
     /*
