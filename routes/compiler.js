@@ -21,7 +21,7 @@ module.exports = function(req, res) {
 }
 
 
-var compileSolc = function(req, res) {
+var compileSolc = async (req, res) => {
 
   // get bytecode at address
   var address = req.body.address;
