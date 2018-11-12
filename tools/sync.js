@@ -244,7 +244,7 @@ const writeTransactionsToDB = async(config, blockData, flush) => {
             return eachCallback(err);
           }
 
-          data[account].balance = web3.utils.fromWei(balance, 'ether');
+          data[account].balance = parseFloat(web3.utils.fromWei(balance, 'ether'));
 
           // let ether;
           //
