@@ -350,7 +350,7 @@ const runPatcher = async (config, startBlock, endBlock) => {
 
       var lastMissingBlock = docs[0].number + 1;
       var currentBlock = await web3.eth.getBlockNumber();
-      runPatcher(config, lastMissingBlock, currentBlock - 1);
+      runPatcher(config, currentBlock - 1000, currentBlock - 1);
     });
     return;
   }
