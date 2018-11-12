@@ -385,7 +385,8 @@ const runPatcher = async (config, startBlock, endBlock) => {
     // flush
     writeBlockToDB(config, null, true);
     writeTransactionsToDB(config, null, true);
-
+    currentBlock = await web3.eth.getBlockNumber();
+    setTimeout(function() { runPatcher(config, currentBlock - 1000, currentBlock); }, 600000);
     console.log('*** Block Patching Completed ***');
   }
 }
