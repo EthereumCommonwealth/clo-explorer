@@ -1,6 +1,19 @@
 <!-- BEGIN PAGE CONTENT-->
 <div class="row">
   <div class="col-md-12 portlet light">
+      <div ng-if="tx.from.indexOf('0xd813419749b3c2cdc94a2f9cfcf154113264a9d6') !== -1 || tx.to.indexOf('0xd813419749b3c2cdc94a2f9cfcf154113264a9d6') !== -1">
+        <div class="col-md-12 no-padding"><h3>Cold Staking transaction:
+          <div style="display: inline;" ng-if="tx.input == '0x1f288efb' || tx.input == '0x'">
+            <strong style="color: #34c88a;">Deposit</strong>
+          </div>
+          <div style="display: inline;" ng-if="tx.input == '0x4e71d92d'">
+            <strong style="color: #34c88a;">Claim (Reward only)</strong>
+          </div>
+          <div style="display: inline;" ng-if="tx.input == '0xcd948855'">
+            <strong style="color: #34c88a;">Withdraw (Stake deposit + Reward)</strong>
+          </div>
+        </h3></div>
+      </div>
       <div class="portlet-body">
 
         <table class="col-md-6 table table-hover">
