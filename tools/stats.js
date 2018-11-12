@@ -8,8 +8,8 @@ var Web3 = require('web3');
 var mongoose = require( 'mongoose' );
 var BlockStat = require( '../db.js' ).BlockStat;
 
-var updateStats = function(range, interval, rescan) {
-    var latestBlock = web3.eth.blockNumber;
+var updateStats = async (range, interval, rescan) => {
+    var latestBlock = await web3.eth.getBlockNumber();
 
     interval = Math.abs(parseInt(interval));
     if (!range) {
@@ -33,7 +33,7 @@ var getStats = function(web3, blockNumber, nextBlock, endNumber, interval, resca
         return;
     }
 
-    if(web3.isConnected()) {
+    if(web3.eth.net.isListening()) {
 
         web3.eth.getBlock(blockNumber, true, function(error, blockData) {
             if(error) {
@@ -59,7 +59,7 @@ var getStats = function(web3, blockNumber, nextBlock, endNumber, interval, resca
 }
 
 /**
-  * Checks if the a record exists for the block number 
+  * Checks if the a record exists for the block number
   *     if record exists: abort
   *     if record DNE: write a file for the block
   */
@@ -81,13 +81,13 @@ var checkBlockDBExistsThenWrite = function(web3, blockData, nextBlock, endNumber
             new BlockStat(stat).save( function( err, s, count ){
                 console.log(s)
                 if ( typeof err !== 'undefined' && err ) {
-                   console.log('Error: Aborted due to error on ' + 
-                        'block number ' + blockData.number.toString() + ': ' + 
+                   console.log('Error: Aborted due to error on ' +
+                        'block number ' + blockData.number.toString() + ': ' +
                         err);
                    process.exit(9);
                 } else {
                     console.log('DB successfully written for block number ' +
-                        blockData.number.toString() );    
+                        blockData.number.toString() );
                     getStats(web3, blockData.number - interval, blockData, endNumber, interval, rescan);
                 }
             });
