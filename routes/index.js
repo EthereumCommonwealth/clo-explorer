@@ -1,7 +1,8 @@
 var mongoose = require( 'mongoose' );
 
-var Block     = mongoose.model( 'Block' );
-var Transaction = mongoose.model( 'Transaction' );
+var Block     = mongoose.model('Block');
+var Transaction = mongoose.model('Transaction');
+var Account = mongoose.model('Account');
 var filters = require('./filters');
 
 var async = require('async');
@@ -163,12 +164,14 @@ var getData = function(req, res){
   Total supply API code
 */
 var getTotal = function(req, res) {
-  var block = Block.findOne({}, "number")
-                      .lean(true).sort('-number');
-  block.exec(function (err, doc) {
-    // res.write(JSON.stringify(doc));
-    var total = 100491853 + (doc.number) * 600;
-    res.write(total.toString());
+  Account.aggregate([
+    { $group: { _id: null, totalSupply: { $sum: '$balance' } } }
+  ]).exec(function(err, docs) {
+    if (err) {
+      res.write("Error getting total supply");
+      res.end()
+    }
+    res.write(docs[0].totalSupply);
     res.end();
   });
 }
