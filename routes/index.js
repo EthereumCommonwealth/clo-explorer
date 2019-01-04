@@ -171,7 +171,7 @@ var getTotal = function(req, res) {
       res.write("Error getting total supply");
       res.end()
     }
-    res.write(docs[0].totalSupply);
+    res.write(docs[0].totalSupply.toString());
     res.end();
   });
 }
