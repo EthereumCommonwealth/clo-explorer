@@ -45,7 +45,8 @@
            "0x40c48b386e15981df5a10552cb97ee6d232c8547": "solo-clo.ethash.farm",
            "0x458ddc6a7e924554756f95715a53bf948560ee38": "clo.digipools.org",
            "0x3c6b9edb1f8ec6c85436b7cb384eb607489c732f": "vvpool.com",
-           "0x2a1efdf9f09869a82e5e6b0f3736aabcb5381206": "uleypool.com"
+           "0x2a1efdf9f09869a82e5e6b0f3736aabcb5381206": "uleypool.com",
+           "0xf30a30315d5214e490458d0511595e42b3d917d0": "clopool.maxhash.org"
         }
     }
 }
