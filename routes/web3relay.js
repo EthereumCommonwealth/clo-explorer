@@ -127,7 +127,7 @@ exports.data = async (req, res) => {
 
       const latestPrice = await Market.findOne().sort({timestamp: -1})
 
-      const latestBlock = await web3.eth.getBlockNumber();
+      const latestBlock = await web3.eth.getBlockNumber() + 1;
 
       transactionResponse.confirmations = latestBlock - transactionResponse.blockNumber;
       transactionResponse.gasPriceGwei = web3.utils.fromWei(transactionResponse.gasPrice, 'Gwei');
