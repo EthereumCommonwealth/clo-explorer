@@ -439,7 +439,7 @@ exports.data = async (req, res) => {
 
     if (options.indexOf("balance") > -1) {
       try {
-        addrData["balance"] = await web3Addr.eth.getBalance(addr);
+        addrData["balance"] = await web3.eth.getBalance(addr);
         addrData["balance"] = etherUnits.toEther(addrData["balance"], 'wei');
       } catch(err) {
         console.error("AddrWeb3 error :" + err);
@@ -448,7 +448,7 @@ exports.data = async (req, res) => {
     }
     if (options.indexOf("count") > -1) {
       try {
-         addrData["count"] = await web3Addr.eth.getTransactionCount(addr);
+         addrData["count"] = await web3.eth.getTransactionCount(addr);
       } catch (err) {
         console.error("AddrWeb3 error :" + err);
         addrData = {"error": true};
@@ -456,7 +456,7 @@ exports.data = async (req, res) => {
     }
     if (options.indexOf("bytecode") > -1) {
       try {
-         addrData["bytecode"] = await web3Addr.eth.getCode(addr);
+         addrData["bytecode"] = await web3.eth.getCode(addr);
          if (addrData["bytecode"].length > 2)
             addrData["isContract"] = true;
          else
