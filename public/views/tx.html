@@ -40,8 +40,8 @@
                 <td><span ng-show="tx.isTrace">Contract:</span><a href="/addr/{{tx.to}}">{{tx.to}}</a></td></tr>
           <tr ng-show="tx.creates"><td width="25%">Creates:</td>
                 <td><a href="/addr/{{tx.creates}}">{{tx.creates}}</a></td></tr>
-          <tr ><td width="25%">Value:</td><td><span class="font-green-title"><i class="fab fa-ethereum"></i> {{tx.value | number: 4}} {{ settings.symbol }}</span> => {{ tx.valueUSD | currency : "USD $" : 4 }}</td></tr>
-          <tr ><td width="25%">Transaction fee:</td><td>{{tx.transactionFee | number:6}} {{ settings.symbol }} => {{ tx.transactionFeeUSD | currency : "USD $" : 10 }}</td></tr>
+          <tr ><td width="25%">Value:</td><td><span class="font-green-title"> <img src="/img/mini-logo.svg" alt="mini-logo" class="mini-logo" /> {{tx.value | number: 8}} {{ settings.symbol }}</span> => {{ tx.valueUSD | currency : "USD $" : 4 }}</td></tr>
+          <tr ><td width="25%">Transaction fee:</td><td>{{tx.transactionFee | number : 6}} {{ settings.symbol }} => {{ tx.transactionFeeUSD | currency : "USD $" : 10 }}</td></tr>
           <tr ><td width="25%">Gas Provided:</td><td>{{tx.gas | number}}</td></tr>
           <tr ><td width="25%">Gas Used:</td><td>{{tx.gasUsed | number}}</td></tr>
           <tr ><td width="25%">Gas Price:</td><td>{{tx.gasPrice | number:9}} {{ settings.symbol }} ({{tx.gasPriceGwei | number}} Gwei)</td></tr>
