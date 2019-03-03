@@ -14,10 +14,11 @@ var asyncL = require('async');
 var abiDecoder = require('abi-decoder');
 
 require( '../db.js' );
-var mongoose = require( 'mongoose' );
-var Block     = mongoose.model( 'Block' );
-var Contract = mongoose.model( 'Contract' );
-var Transaction = mongoose.model( 'Transaction' );
+const mongoose = require( 'mongoose' );
+const Block     = mongoose.model( 'Block' );
+const Contract = mongoose.model( 'Contract' );
+const Transaction = mongoose.model( 'Transaction' );
+const Market = mongoose.model( 'Market' );
 
 var getLatestBlocks = require('./index').getLatestBlocks;
 var filterBlocks = require('./filters').filterBlocks;
@@ -88,7 +89,7 @@ exports.data = async (req, res) => {
   if ("tx" in req.body) {
     var txHash = req.body.tx.toLowerCase();
 
-    Transaction.findOne({hash: txHash}).lean(true).exec(function(err, doc) {
+    Transaction.findOne({hash: txHash}).lean(true).exec(async(err, doc) => {
       if (err || !doc) {
         web3.eth.getTransaction(txHash, function(err, tx) {
           if(err || !tx) {
@@ -116,15 +117,27 @@ exports.data = async (req, res) => {
               if (!err && block)
                 ttx.timestamp = block.timestamp;
               ttx.isTrace = (ttx.input != "0x");
-              res.write(JSON.stringify(ttx));
-              res.end();
+              transactionResponse = ttx;
             });
           }
         });
       } else {
-        res.write(JSON.stringify(doc));
-        res.end();
+        transactionResponse = doc;
       }
+
+      const latestPrice = await Market.findOne().sort({timestamp: -1})
+
+      const latestBlock = await web3.eth.getBlockNumber();
+
+      transactionResponse.confirmations = latestBlock - transactionResponse.blockNumber;
+      transactionResponse.gasPriceGwei = web3.utils.fromWei(transactionResponse.gasPrice, 'Gwei');
+      transactionResponse.gasPrice = web3.utils.fromWei(transactionResponse.gasPrice, 'ether');
+      transactionResponse.transactionFee = transactionResponse.gasPrice * transactionResponse.gasUsed;
+      transactionResponse.transactionFeeUSD = transactionResponse.transactionFee * latestPrice.quoteUSD;
+      transactionResponse.valueUSD = transactionResponse.value * latestPrice.quoteUSD;
+
+      res.write(JSON.stringify(transactionResponse));
+      res.end();
     });
 
   } else if ("tx_trace" in req.body) {
@@ -468,6 +481,9 @@ exports.data = async (req, res) => {
       //   }
       // }
     }
+
+    const latestPrice = await Market.findOne().sort({timestamp: -1})
+    addrData["balanceUSD"] = addrData.balance * latestPrice.quoteUSD;
 
     res.write(JSON.stringify(addrData));
     res.end();

@@ -77,6 +77,13 @@ var BlockStat = new Schema(
     "uncleCount": Number
 });
 
+var Market = new Schema({
+    "symbol": String,
+    "timestamp": Number,
+    "quoteBTC": Number,
+    "quoteUSD": Number
+})
+
 // create indices
 Transaction.index({timestamp:-1});
 Transaction.index({blockNumber:-1});
@@ -86,17 +93,20 @@ Transaction.index({creates:1, blockNumber:-1});
 Account.index({balance:-1});
 Account.index({balance:-1, blockNumber:-1});
 Block.index({miner:1});
+Market.index({timestamp: -1})
 
 mongoose.model('BlockStat', BlockStat);
 mongoose.model('Block', Block);
 mongoose.model('Account', Account);
 mongoose.model('Contract', Contract);
 mongoose.model('Transaction', Transaction);
+mongoose.model('Market', Market);
 module.exports.BlockStat = mongoose.model('BlockStat');
 module.exports.Block = mongoose.model('Block');
 module.exports.Contract = mongoose.model('Contract');
 module.exports.Transaction = mongoose.model('Transaction');
 module.exports.Account = mongoose.model('Account');
+module.exports.Market = mongoose.model('Market');
 
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost/blockDB');
 
