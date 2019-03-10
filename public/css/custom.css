@@ -133,7 +133,7 @@ li.ng-scope {
     }
 
     .search-form.open {
-      width: 300px;
+      width: 300px !important;
     }
 
     .top-menu-wrapper {
@@ -150,7 +150,7 @@ li.ng-scope {
 }
 
 ::-webkit-scrollbar {
-    width: 4p
+    width: 4px;
     height: 6px;
 }
 ::-webkit-scrollbar-button {
