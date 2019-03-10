@@ -130,6 +130,10 @@ exports.data = async (req, res) => {
       const latestBlock = await web3.eth.getBlockNumber() + 1;
 
       transactionResponse.confirmations = latestBlock - transactionResponse.blockNumber;
+
+      if (transactionResponse.confirmations === latestBlock) {
+        transactionResponse.confirmation = 0;
+      }
       transactionResponse.gasPriceGwei = web3.utils.fromWei(transactionResponse.gasPrice, 'Gwei');
       transactionResponse.gasPrice = web3.utils.fromWei(transactionResponse.gasPrice, 'ether');
       transactionResponse.transactionFee = transactionResponse.gasPrice * transactionResponse.gasUsed;
