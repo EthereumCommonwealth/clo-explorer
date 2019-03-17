@@ -45,3 +45,4 @@ public/js/stats/The_bomb_chart.js
 public/views/richlist.js
 .DS_Store
 .vscode
+.idea
