@@ -1,7 +1,6 @@
 const _ = require('lodash');
 const mongoose = require('mongoose');
 const fetch = require('node-fetch');
-const https = require('https');
 const { Market } = require('../db.js');
 
 // 10 minutes
