@@ -8,7 +8,7 @@
     "patch":        true,
     "patchBlocks":  100,
     "bulkSize":     100,
-    "CMC_API_KEY":  "<PUT CMC API KEY HERE>",
+    "CMC_API_KEY":  "6eefc1e4-f341-492c-8bcf-50242a9ba34c",
     "settings": {
         "symbol": "CLO",
         "name": "Callisto Network",

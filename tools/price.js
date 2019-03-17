@@ -1,8 +1,8 @@
 const _ = require('lodash');
-const mongoose = require( 'mongoose' );
+const mongoose = require('mongoose');
 const fetch = require("node-fetch");
 const https = require('https');
-const Market = require( '../db.js' ).Market;
+const Market = require('../db.js' ).Market;
 
 // 10 minutes
 const quoteInterval = 10 * 60 * 1000;

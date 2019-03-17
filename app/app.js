@@ -1,14 +1,11 @@
 #!/usr/bin/env node
-
-require( './db' );
-
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
-
-var app = express();
+require('./db');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const app = express();
 app.set('port', process.env.PORT || 3000);
 
 // view engine setup
@@ -27,47 +24,42 @@ global.__lib = __dirname + '/lib/';
 
 // client
 
-app.get('/', function(req, res) {
+app.get('/', (req, res) => {
   res.render('index');
 });
 
 require('./routes')(app);
 
 // let angular catch them
-app.use(function(req, res) {
+app.use((req, res) => {
   res.render('index');
 });
 
 // error handlers
-
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
-    });
+	app.use(function(err, req, res, next) {
+		res.status(err.status || 500);
+		res.render('error', {
+			message: err.message,
+			error: err,
+		});
+	});
 }
-
-
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+	res.status(err.status || 500);
+	res.render('error', {
+		message: err.message,
+		error: {},
+	});
 });
 
-var http = require('http').Server(app);
-//var io = require('socket.io')(http);
-
+const http = require('http').Server(app);
+//const io = require('socket.io')(http);
 // web3socket(io);
-
-http.listen(app.get('port'), '0.0.0.0', function() {
-    console.log('Express server listening on port ' + app.get('port'));
+http.listen(app.get('port'), '0.0.0.0', () => {
+  console.log('Express server listening on port ' + app.get('port'));
 });

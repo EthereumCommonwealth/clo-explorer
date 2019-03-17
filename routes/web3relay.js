@@ -409,11 +409,11 @@ exports.data = async (req, res) => {
               if (t.type == "call") {
                 var methodSig = t.action.input ? t.action.input.substr(0, 10) : null;
                 var callInfo = {};
-                if (methodSig && KnownMethodIDs[methodSig] && KnownMethodIDs[methodSig].method == 'transfer') {
+                if (methodSig && KnownMethodIDs[methodSig] && KnownMethodIDs[methodSig].method === 'transfer') {
                   // decode transfer action only
                   callInfo = abiDecoder.decodeMethod(t.action.input);
                 }
-                if (callInfo && callInfo.name && callInfo.name == 'transfer') {
+                if (callInfo && callInfo.name && callInfo.name === 'transfer') {
                   // convert amount
                   var amount = new BigNumber(callInfo.params[1].value);
                   t.amount = amount.dividedBy(KnownTokenDecimalDivisors[addr]).toString(10);
@@ -429,45 +429,46 @@ exports.data = async (req, res) => {
                 transactions.push(t);
               }
             });
-            res.write(JSON.stringify({transactions, createTransaction: transaction, after: after, count: filter.count}));
+            res.write(JSON.stringify({
+              transactions,
+              createTransaction: transaction,
+              after,
+              count: filter.count,
+            }));
           }
         }
         res.end();
       });
     });
-  } else if ("addr" in req.body) {
-    var addr = req.body.addr.toLowerCase();
-    var options = req.body.options;
-
-    var addrData = {};
-
-    if (options.indexOf("balance") > -1) {
+  } else if ('addr' in req.body) {
+    const addr = req.body.addr.toLowerCase();
+    const options = req.body.options;
+    let addrData = {};
+    if (options.indexOf('balance') > -1) {
       try {
-        addrData["balance"] = await web3.eth.getBalance(addr);
-        addrData["balance"] = etherUnits.toEther(addrData["balance"], 'wei');
-      } catch(err) {
-        console.error("AddrWeb3 error :" + err);
-        addrData = {"error": true};
+        addrData['balance'] = await web3.eth.getBalance(addr);
+        addrData['balance'] = etherUnits.toEther(addrData['balance'], 'wei');
+      } catch (err) {
+        console.error(`AddrWeb3 error : ${err}`);
+        addrData = { 'error': true };
       }
     }
-    if (options.indexOf("count") > -1) {
+    if (options.indexOf('count') > -1) {
       try {
-         addrData["count"] = await web3.eth.getTransactionCount(addr);
+        addrData['count'] = await web3.eth.getTransactionCount(addr);
       } catch (err) {
-        console.error("AddrWeb3 error :" + err);
-        addrData = {"error": true};
+        console.error(`AddrWeb3 error : ${err}`);
+        addrData = { 'error': true };
       }
     }
-    if (options.indexOf("bytecode") > -1) {
+    if (options.indexOf('bytecode') > -1) {
       try {
-         addrData["bytecode"] = await web3.eth.getCode(addr);
-         if (addrData["bytecode"].length > 2)
-            addrData["isContract"] = true;
-         else
-            addrData["isContract"] = false;
+        addrData['bytecode'] = await web3.eth.getCode(addr);
+        if (addrData['bytecode'].length > 2) addrData['isContract'] = true;
+        else addrData['isContract'] = false;
       } catch (err) {
-        console.error("AddrWeb3 error :" + err);
-        addrData = {"error": true};
+        console.error(`AddrWeb3 error : ${err}`);
+        addrData = { 'error': true };
       }
 
       // is it a ERC20 compatible token?
@@ -486,36 +487,36 @@ exports.data = async (req, res) => {
       // }
     }
 
-    const latestPrice = await Market.findOne().sort({timestamp: -1})
-    addrData["balanceUSD"] = addrData.balance * latestPrice.quoteUSD;
-
+    const latestPrice = await Market.findOne().sort({ timestamp: -1 });
+    addrData['balanceUSD'] = addrData.balance * latestPrice.quoteUSD;
     res.write(JSON.stringify(addrData));
     res.end();
-  } else if ("block" in req.body) {
-    var blockNumOrHash;
+  } else if ('block' in req.body) {
+    let blockNumOrHash;
     if (/^(0x)?[0-9a-f]{64}$/i.test(req.body.block.trim())) {
-        blockNumOrHash = req.body.block.toLowerCase();
+      blockNumOrHash = req.body.block.toLowerCase();
     } else {
-        blockNumOrHash = parseInt(req.body.block);
+      blockNumOrHash = parseInt(req.body.block);
     }
-    Block.findOne({$or: [{hash: blockNumOrHash}, {number: blockNumOrHash}]},
-      { '_id': 0 }).lean(true).exec("findOne", function(err, doc) {
+    Block.findOne({ $or: [{ hash: blockNumOrHash }, { number: blockNumOrHash }] },
+      { '_id': 0 }).lean(true).exec('findOne', (err, doc) => {
       if (err || !doc) {
-        web3.eth.getBlock(blockNumOrHash, function(err, block) {
-          if(err || !block) {
-            console.error("BlockWeb3 error :" + err)
-            res.write(JSON.stringify({"error": true}));
+        web3.eth.getBlock(blockNumOrHash, (err, block) => {
+          if (err || !block) {
+            console.error(`BlockWeb3 error : ${err}`);
+            res.write(JSON.stringify({ 'error': true }));
           } else {
             res.write(JSON.stringify(filterBlocks(block)));
           }
           res.end();
         });
       } else {
-        Transaction.find({blockNumber: doc.number}).distinct("hash", (err, txs) => {
-          doc["transactions"] = txs;
-          res.write(JSON.stringify(filterBlocks(doc)));
-          res.end();
-        });
+        Transaction.find({ blockNumber: doc.number })
+          .distinct('hash', (err, txs) => {
+            doc['transactions'] = txs;
+            res.write(JSON.stringify(filterBlocks(doc)));
+            res.end();
+          });
       }
     });
 
@@ -523,69 +524,78 @@ exports.data = async (req, res) => {
     / TODO: Refactor, "block" / "uncle" determinations should likely come later
     / Can parse out the request once and then determine the path.
     */
-  } else if ("uncle" in req.body) {
-    var uncle = req.body.uncle.trim();
-    var arr = uncle.split('/');
-    var blockNumOrHash; // Ugly, does the same as blockNumOrHash above
-    var uncleIdx = parseInt(arr[1]) || 0;
+  } else if ('uncle' in req.body) {
+    const uncle = req.body.uncle.trim();
+    const arr = uncle.split('/');
+    let blockNumOrHash; // Ugly, does the same as blockNumOrHash above
+    const uncleIdx = parseInt(arr[1]) || 0;
 
     if (/^(?:0x)?[0-9a-f]{64}$/i.test(arr[0])) {
       blockNumOrHash = arr[0].toLowerCase();
-      console.log(blockNumOrHash)
+      console.log(blockNumOrHash);
     } else {
       blockNumOrHash = parseInt(arr[0]);
     }
 
-    if (typeof blockNumOrHash == 'undefined') {
-      console.error("UncleWeb3 error :" + err);
-      res.write(JSON.stringify({"error": true}));
+    if (typeof blockNumOrHash === 'undefined') {
+      console.error(`UncleWeb3 error : ${err}`);
+      res.write(JSON.stringify({ 'error': true }));
       res.end();
       return;
     }
 
-    web3.eth.getBlock(blockNumOrHash, uncleIdx, function(err, uncle) {
-      if(err || !uncle) {
-        console.error("UncleWeb3 error :" + err)
-        res.write(JSON.stringify({"error": true}));
+    web3.eth.getBlock(blockNumOrHash, uncleIdx, (err, uncle) => {
+      if (err || !uncle) {
+        console.error(`UncleWeb3 error : ${err}`);
+        res.write(JSON.stringify({ 'error': true }));
       } else {
         res.write(JSON.stringify(filterBlocks(uncle)));
       }
       res.end();
     });
 
-  } else if ("action" in req.body) {
-    if (req.body.action == 'hashrate') {
-      web3.eth.getBlock('latest', function(err, latest) {
-        if(err || !latest) {
-          console.error("StatsWeb3 error :" + err);
-          res.write(JSON.stringify({"error": true}));
+  } else if ('action' in req.body) {
+    if (req.body.action === 'hashrate') {
+      web3.eth.getBlock('latest', (err, latest) => {
+        if (err || !latest) {
+          console.error(`StatsWeb3 error : ${err}`);
+          res.write(JSON.stringify({ 'error': true }));
           res.end();
         } else {
-          console.log("StatsWeb3: latest block: " + latest.number);
-          var checknum = latest.number - 100;
-          if(checknum < 0)
-            checknum = 0;
-          var nblock = latest.number - checknum;
-          web3.eth.getBlock(checknum, function(err, block) {
-            if(err || !block) {
-              console.error("StatsWeb3 error :" + err);
-              res.write(JSON.stringify({"blockHeight": latest.number, "difficulty": latest.difficulty, "blockTime": 0, "hashrate": 0 }));
+          console.log(`StatsWeb3: latest block: ${latest.number}`);
+          let checknum = latest.number - 100;
+          if (checknum < 0) checknum = 0;
+          const nblock = latest.number - checknum;
+          web3.eth.getBlock(checknum, (err, block) => {
+            if (err || !block) {
+              console.error(`StatsWeb3 error: ${err}`);
+              res.write(JSON.stringify({
+                'blockHeight': latest.number,
+                'difficulty': latest.difficulty,
+                'blockTime': 0,
+                'hashrate': 0,
+              }));
             } else {
-              console.log("StatsWeb3: check block: " + block.number);
-              var blocktime = (latest.timestamp - block.timestamp) / nblock;
-              var hashrate = latest.difficulty / blocktime;
-              res.write(JSON.stringify({"blockHeight": latest.number, "difficulty": latest.difficulty, "blockTime": blocktime, "hashrate": hashrate }));
+              console.log(`StatsWeb3: check block: ${block.number}`);
+              const blocktime = (latest.timestamp - block.timestamp) / nblock;
+              const hashrate = latest.difficulty / blocktime;
+              res.write(JSON.stringify({
+                'blockHeight': latest.number,
+                'difficulty': latest.difficulty,
+                'blockTime': blocktime,
+                'hashrate': hashrate,
+              }));
             }
             res.end();
           });
         }
       });
     } else {
-      console.error("Invalid Request: " + action)
+      console.error(`Invalid Request: ${action}`);
       res.status(400).send();
     }
   } else {
-    console.error("Invalid Request: " + action)
+    console.error(`Invalid Request: ${action}`);
     res.status(400).send();
   }
 
