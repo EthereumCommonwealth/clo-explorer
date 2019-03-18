@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const Block = mongoose.model('Block');
 const Transaction = mongoose.model('Transaction');
 const Account = mongoose.model('Account');
@@ -8,11 +7,9 @@ const filters = require('./filters');
 
 const MAX_ENTRIES = 10;
 
-module.exports = function (app) {
+module.exports = (app) => {
   const web3relay = require('./web3relay');
-
   const Token = require('./token');
-
   const compile = require('./compiler');
   const fiat = require('./fiat');
   const stats = require('./stats');
@@ -31,11 +28,9 @@ module.exports = function (app) {
   app.post('/block', getBlock);
   app.post('/data', getData);
   app.get('/total', getTotal);
-
   app.post('/tokenrelay', Token);
   app.post('/web3relay', web3relay.data);
   app.post('/compile', compile);
-
   app.post('/fiat', fiat);
   app.post('/stats', stats);
 };
@@ -44,7 +39,6 @@ const getAddr = async (req, res) => {
   // TODO: validate addr and tx
   const addr = req.body.addr.toLowerCase();
   const count = parseInt(req.body.count);
-
   const limit = parseInt(req.body.length);
   const start = parseInt(req.body.start);
 
@@ -73,14 +67,13 @@ const getAddr = async (req, res) => {
     });
 
 };
-var getAddrCounter = function (req, res) {
+const getAddrCounter = function (req, res) {
   const addr = req.body.addr.toLowerCase();
   const count = parseInt(req.body.count);
   const data = { recordsFiltered: count, recordsTotal: count, mined: 0 };
 
   async.waterfall([
     function (callback) {
-
       Transaction.count({ $or: [{ 'to': addr }, { 'from': addr }] }, (err, count) => {
         if (!err && count) {
           // fix recordsTotal
@@ -105,7 +98,7 @@ var getAddrCounter = function (req, res) {
   });
 
 };
-var getBlock = function (req, res) {
+const getBlock = function (req, res) {
   // TODO: support queries for block hash
   const txQuery = 'number';
   const number = parseInt(req.body.block);
@@ -124,7 +117,7 @@ var getBlock = function (req, res) {
   });
 };
 
-var getTx = function (req, res) {
+const getTx = function (req, res) {
   const tx = req.body.tx.toLowerCase();
   const txFind = Block.findOne({ 'transactions.hash': tx }, 'transactions timestamp')
     .lean(true);
@@ -145,14 +138,14 @@ var getTx = function (req, res) {
 /*
   Fetch data from DB
 */
-var getData = function (req, res) {
+const getData = function (req, res) {
   // TODO: error handling for invalid calls
   const action = req.body.action.toLowerCase();
   const { limit } = req.body;
-
+  let lim;
   if (action in DATA_ACTIONS) {
-    if (isNaN(limit)) var lim = MAX_ENTRIES;
-    else var lim = parseInt(limit);
+    if (isNaN(limit)) lim = MAX_ENTRIES;
+    else lim = parseInt(limit);
     DATA_ACTIONS[action](lim, res);
   } else {
     console.error(`Invalid Request: ${action}`);
@@ -163,7 +156,7 @@ var getData = function (req, res) {
 /*
   Total supply API code
 */
-var getTotal = function (req, res) {
+const getTotal = function (req, res) {
   Account.aggregate([
     { $group: { _id: null, totalSupply: { $sum: '$balance' } } },
   ]).exec((err, docs) => {

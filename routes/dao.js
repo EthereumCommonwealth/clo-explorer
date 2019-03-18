@@ -5,19 +5,14 @@
 */
 
 require('../db-dao');
-
 const mongoose = require('mongoose');
-
 const DAOCreatedToken = mongoose.model('DAOCreatedToken');
 const DAOTransferToken = mongoose.model('DAOTransferToken');
-
 const BigNumber = require('bignumber.js');
 const { eth } = require('./web3relay');
 
 const etherUnits = require(`${__lib}etherUnits.js`);
-
 const MAX_ENTRIES = 50;
-
 const extraBalanceAddr = '0x807640a13483f8ac783c557fcdf27be11ea4ac7a';
 const daoABI = [{
   'constant': true, 'inputs': [{ 'name': '', 'type': 'uint256' }], 'name': 'proposals', 'outputs': [{ 'name': 'recipient', 'type': 'address' }, { 'name': 'amount', 'type': 'uint256' }, { 'name': 'description', 'type': 'string' }, { 'name': 'votingDeadline', 'type': 'uint256' }, { 'name': 'open', 'type': 'bool' }, { 'name': 'proposalPassed', 'type': 'bool' }, { 'name': 'proposalHash', 'type': 'bytes32' }, { 'name': 'proposalDeposit', 'type': 'uint256' }, { 'name': 'newCurator', 'type': 'bool' }, { 'name': 'yea', 'type': 'uint256' }, { 'name': 'nay', 'type': 'uint256' }, { 'name': 'creator', 'type': 'address' }], 'type': 'function',
@@ -167,7 +162,7 @@ module.exports = function (req, res) {
     } catch (e) {
       console.error(e);
     }
-  } else if (req.body.action == 'createdTokens') {
+  } else if (req.body.action === 'createdTokens') {
     if (req.body.last_id) var options = { '_id': { $lt: req.body.last_id } };
     else var options = {};
     var ctFind = DAOCreatedToken.find(options).lean(true).sort('-blockNumber').limit(MAX_ENTRIES);

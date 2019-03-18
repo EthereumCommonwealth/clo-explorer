@@ -34,7 +34,7 @@ function filterBlock(block, field, value) {
   console.log(block);
   console.log(field);
   console.log(value);
-  let tx = block.transactions.filter(obj => obj[field] == value);
+  let tx = block.transactions.filter(obj => obj[field] === value);
   console.log(tx);
   tx = tx[0];
   if (typeof tx !== 'undefined') tx.timestamp = block.timestamp;
@@ -86,7 +86,7 @@ function baToString(ba) {
 
 }
 
-var hex2ascii = function (hexIn) {
+const hex2ascii = function (hexIn) {
   const hex = hexIn.toString();
   let str = '';
 

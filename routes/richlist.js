@@ -90,7 +90,6 @@ const getAccounts = function (req, res) {
           res.end();
           return;
         }
-
         data.data = accounts.map((account, i) => [i + 1 + start, account.address, account.type === 0 ? 'Account' : 'Contract', account.balance, account.blockNumber]);
         res.write(JSON.stringify(data));
         res.end();

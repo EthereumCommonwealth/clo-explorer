@@ -10,14 +10,11 @@ let web3;
 
 const _ = require('lodash');
 const BigNumber = require('bignumber.js');
-
 const etherUnits = require(`${__lib}etherUnits.js`);
 const asyncL = require('async');
 const abiDecoder = require('abi-decoder');
-
 require('../db.js');
 const mongoose = require('mongoose');
-
 const Block = mongoose.model('Block');
 const Contract = mongoose.model('Contract');
 const Transaction = mongoose.model('Transaction');
@@ -90,7 +87,6 @@ try {
     console.log('No config file found. Using default configuration... (config.example.json)');
   } else {
     throw error;
-    process.exit(1);
   }
 }
 
@@ -120,12 +116,9 @@ web3Addr = new Web3(new Web3.providers.HttpProvider('https://clo-geth.0xinfra.co
 
 if (web3.eth.net.isListening()) console.log('Web3 connection established');
 else throw 'No connection, please specify web3host in conf.json';
-
 web3 = require('../lib/trace.js')(web3);
-
 // var newBlocks = web3.eth.filter("latest");
 // var newTxs = web3.eth.filter("pending");
-
 exports.data = async (req, res) => {
   if ('tx' in req.body) {
     const txHash = req.body.tx.toLowerCase();
@@ -156,7 +149,7 @@ exports.data = async (req, res) => {
             //get timestamp from block
             const block = web3.eth.getBlock(tx.blockNumber, (err, block) => {
               if (!err && block) ttx.timestamp = block.timestamp;
-              ttx.isTrace = (ttx.input != '0x');
+              ttx.isTrace = (ttx.input !== '0x');
               transactionResponse = ttx;
             });
           }
@@ -185,7 +178,7 @@ exports.data = async (req, res) => {
     });
 
   } else if ('tx_trace' in req.body) {
-    var txHash = req.body.tx_trace.toLowerCase();
+    const txHash = req.body.tx_trace.toLowerCase();
 
     asyncL.waterfall([
       function (callback) {
@@ -277,7 +270,7 @@ exports.data = async (req, res) => {
         txns.forEach((trace) => {
           if (!trace.error && trace.action.input && tokenContract) {
             trace.callInfo = abiDecoder.decodeMethod(trace.action.input);
-            if (trace.callInfo.name == 'transfer') {
+            if (trace.callInfo.name === 'transfer') {
               const amount = new BigNumber(trace.callInfo.params[1].value);
               trace.amount = amount.dividedBy(decimalsDivisor);
               // replace to address with _to address arg
@@ -389,7 +382,6 @@ exports.data = async (req, res) => {
       let fromBlock = transaction && transaction.blockNumber || lastBlockNumber - 100000;
       fromBlock = fromBlock < 0 ? 0 : fromBlock;
 
-      //
       let toAddr;
       if (!transaction) {
         // search all known tokens
@@ -418,7 +410,7 @@ exports.data = async (req, res) => {
                 // is it transfer action?
                 const methodSig = t.action.input ? t.action.input.substr(0, 10) : null;
                 let callInfo = {};
-                if (methodSig && KnownMethodIDs[methodSig] && KnownMethodIDs[methodSig].method == 'transfer') {
+                if (methodSig && KnownMethodIDs[methodSig] && KnownMethodIDs[methodSig].method === 'transfer') {
                   callInfo = abiDecoder.decodeMethod(t.action.input);
                 } else {
                   return;
@@ -428,7 +420,7 @@ exports.data = async (req, res) => {
                 if (t.from !== addr && toAddr !== addr) {
                   return;
                 }
-                if (callInfo && callInfo.name && callInfo.name == 'transfer') {
+                if (callInfo && callInfo.name && callInfo.name === 'transfer') {
                   const tokenAddr = t.to.toLowerCase();
                   // convert amount
                   const amount = new BigNumber(callInfo.params[1].value);

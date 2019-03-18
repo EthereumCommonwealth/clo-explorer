@@ -167,7 +167,7 @@ module.exports = function (req, res) {
 
       let fromBlock = transaction.blockNumber;
       fromBlock = web3.toHex(fromBlock);
-      const filter = { 'fromBlock': fromBlock, 'toAddress': [addr], 'count': MAX_ENTRIES};
+      const filter = { 'fromBlock': fromBlock, 'toAddress': [addr], 'count': MAX_ENTRIES };
 
       if (after) {
         filter.after = after;
@@ -220,7 +220,7 @@ module.exports = function (req, res) {
 
       let fromBlock = transaction.blockNumber;
       fromBlock = web3.toHex(fromBlock);
-      const filter = { 'fromBlock': fromBlock, 'toAddress': [addr], 'count': MAX_ENTRIES};
+      const filter = { 'fromBlock': fromBlock, 'toAddress': [addr], 'count': MAX_ENTRIES };
 
       if (after) {
         filter.after = after;
