@@ -140,13 +140,13 @@ exports.data = async (req, res) => {
       if (!transactionResponse.status) {
         transactionResponse.confirmations = 0;
       }
-      
+
       transactionResponse.gasPriceGwei = web3.utils.fromWei(transactionResponse.gasPrice, 'Gwei');
       transactionResponse.gasPrice = web3.utils.fromWei(transactionResponse.gasPrice, 'ether');
       transactionResponse.transactionFee = transactionResponse.gasPrice * transactionResponse.gasUsed;
       transactionResponse.transactionFeeUSD = transactionResponse.transactionFee * quoteUSD;
       transactionResponse.valueUSD = transactionResponse.value * quoteUSD;
-      transactionResponse.gasUsedPercent = (transactionResponse.gas / transactionResponse.gasUsed) * 100;
+      transactionResponse.gasUsedPercent = (transactionResponse.gasUsed / transactionResponse.gas) * 100;
 
       console.log(transactionResponse);
       if (transactionResponse.to === treasuryAddress || transactionResponse.from === treasuryAddress) {
