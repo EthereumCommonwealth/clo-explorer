@@ -8,15 +8,18 @@ img.logo-default {
     height: 70px;
 }
 .create{background-color:#36c6d3}
-.truncate-txhash, .truncate-addrhash{
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow: ellipsis;
-    max-width:220px;
+
+.truncate-txhash, .truncate-addrhash {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 280px;
 }
-.truncate-addrhash {
-    max-width:200px;
+
+.item-date {
+  padding-left: 1em;
 }
+
 .scrollable {
     max-height: 400px;
     overflow-y: scroll;
@@ -219,6 +222,18 @@ a:hover {
   color: #34c88a;
 }
 
+.link-green {
+  color: #34c88a;
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+.link-orange {
+  color: #ff876c;
+  font-weight: 400;
+  text-decoration: underline;
+}
+
 .page-header .page-header-menu .hor-menu .navbar-nav>li.active>a, .page-header .page-header-menu .hor-menu .navbar-nav>li.active>a:hover, .page-header .page-header-menu .hor-menu .navbar-nav>li.current>a, .page-header .page-header-menu .hor-menu .navbar-nav>li.current>a:hover {
   border-bottom: 4px solid #34c88a !important;
 }
@@ -260,6 +275,10 @@ a:hover {
 .page-header .page-header-menu .hor-menu .navbar-nav>li.current>a, .page-header .page-header-menu .hor-menu .navbar-nav>li>a:hover {
    border-bottom: solid 2px #34c88a !important;
    background-color: #577688 !important
+}
+
+.general-item-list>.item {
+  padding: 0 0 10px 0 !important;
 }
 
 ::-webkit-scrollbar {

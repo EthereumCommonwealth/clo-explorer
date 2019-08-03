@@ -82,6 +82,7 @@ else
 
 web3 = require("../lib/trace.js")(web3);
 
+const treasuryAddress = "0x74682fc32007af0b6118f259cbe7bccc21641600";
 // var newBlocks = web3.eth.filter("latest");
 // var newTxs = web3.eth.filter("pending");
 
@@ -126,19 +127,31 @@ exports.data = async (req, res) => {
       }
 
       const latestPrice = await Market.findOne().sort({timestamp: -1})
+      let quoteUSD = 0;
+
+      if (latestPrice) {
+        quoteUSD = latestPrice.quoteUSD;
+      }
 
       const latestBlock = await web3.eth.getBlockNumber() + 1;
 
       transactionResponse.confirmations = latestBlock - transactionResponse.blockNumber;
 
-      if (transactionResponse.confirmations === latestBlock) {
-        transactionResponse.confirmation = 0;
+      if (!transactionResponse.status) {
+        transactionResponse.confirmations = 0;
       }
+      
       transactionResponse.gasPriceGwei = web3.utils.fromWei(transactionResponse.gasPrice, 'Gwei');
       transactionResponse.gasPrice = web3.utils.fromWei(transactionResponse.gasPrice, 'ether');
       transactionResponse.transactionFee = transactionResponse.gasPrice * transactionResponse.gasUsed;
-      transactionResponse.transactionFeeUSD = transactionResponse.transactionFee * latestPrice.quoteUSD;
-      transactionResponse.valueUSD = transactionResponse.value * latestPrice.quoteUSD;
+      transactionResponse.transactionFeeUSD = transactionResponse.transactionFee * quoteUSD;
+      transactionResponse.valueUSD = transactionResponse.value * quoteUSD;
+      transactionResponse.gasUsedPercent = (transactionResponse.gas / transactionResponse.gasUsed) * 100;
+
+      console.log(transactionResponse);
+      if (transactionResponse.to === treasuryAddress || transactionResponse.from === treasuryAddress) {
+        transactionResponse.inputAscii = web3.utils.hexToAscii(transactionResponse.input);
+      }
 
       res.write(JSON.stringify(transactionResponse));
       res.end();
@@ -487,7 +500,12 @@ exports.data = async (req, res) => {
     }
 
     const latestPrice = await Market.findOne().sort({timestamp: -1})
-    addrData["balanceUSD"] = addrData.balance * latestPrice.quoteUSD;
+    let quoteUSD = 0;
+      
+    if (latestPrice) {
+      quoteUSD = latestPrice.quoteUSD;
+    }
+    addrData["balanceUSD"] = addrData.balance * quoteUSD;
 
     res.write(JSON.stringify(addrData));
     res.end();
