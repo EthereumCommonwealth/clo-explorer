@@ -47,7 +47,7 @@
           <tr ><td width="25%">Gas Price:</td><td>{{tx.gasPrice | number:9}} {{ settings.symbol }} ({{tx.gasPriceGwei | number}} Gwei)</td></tr>
           <tr ><td width="25%">Nonce:</td><td>{{tx.nonce}}</td></tr>
           <tr ><td width="25%">Input Data:</td><td><pre class="code">{{tx.input}}</pre></td></tr>
-          <tr ng-if="!tx.inputAscii"><td width="25%">Input data converted to Text:</td><td><pre class="code">{{tx.inputAscii}}</pre></td></tr>
+          <tr ng-if="tx.inputAscii"><td width="25%">Input data converted to Text:</td><td><pre class="code">{{tx.inputAscii}}</pre></td></tr>
 
         </table>
 

@@ -148,7 +148,6 @@ exports.data = async (req, res) => {
       transactionResponse.valueUSD = transactionResponse.value * quoteUSD;
       transactionResponse.gasUsedPercent = (transactionResponse.gasUsed / transactionResponse.gas) * 100;
 
-      console.log(transactionResponse);
       if (transactionResponse.to === treasuryAddress || transactionResponse.from === treasuryAddress) {
         transactionResponse.inputAscii = web3.utils.hexToAscii(transactionResponse.input);
       }
