@@ -1,5 +1,5 @@
 <div class="row" style="margin-top:10px;margin-bottom:10px;">
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
         <div class="dashboard-stat2">
             <div class="display">
                 <div class="number">
@@ -8,14 +8,14 @@
                     <div class="icon">
                         <i class="fas fa-cubes"></i>
                     </div>
-                    <small>#</small>
-                        <span data-counter="counterup" data-value="stats.blockHeight" class="font-green-title">{{stats.blockHeight | number: 0 }}</span>
+                    #
+                    <span data-counter="counterup" data-value="stats.blockHeight" class="font-green-title">{{stats.blockHeight | number: 0 }}</span>
                     </h3>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
         <div class="dashboard-stat2">
             <div class="display">
                 <div class="number">
@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
         <div class="dashboard-stat2 ">
             <div class="display">
                 <div class="number">
@@ -45,7 +45,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
         <div class="dashboard-stat2 ">
             <div class="display">
                 <div class="number">
@@ -55,6 +55,36 @@
                             <i class="fas fa-puzzle-piece"></i>
                         </div>
                         <span data-counter="counterup" data-value="stats.difficulty" class="font-green-title">{{stats.difficulty | totalDifficulty}}</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+        <div class="dashboard-stat2 ">
+            <div class="display">
+                <div class="number">
+                    <small>ACTIVE ADDRESSES*</small>
+                    <h3>
+                        <div class="icon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <span data-counter="counterup" data-value="stats.difficulty" class="font-green-title">{{stats.activeAddresses | number}}</span>
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
+        <div class="dashboard-stat2 ">
+            <div class="display">
+                <div class="number">
+                    <small>CLO Transferred**</small>
+                    <h3>
+                        <div class="icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <span data-counter="counterup" data-value="stats.difficulty" class="font-green-title">{{stats.cloTransferredAmount | number:2}}</span>
                     </h3>
                 </div>
             </div>

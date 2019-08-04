@@ -19,6 +19,8 @@ const Block     = mongoose.model( 'Block' );
 const Contract = mongoose.model( 'Contract' );
 const Transaction = mongoose.model( 'Transaction' );
 const Market = mongoose.model( 'Market' );
+const ActiveAddressesStat = mongoose.model( 'ActiveAddressesStat' );
+const CLOTransferredStat = mongoose.model( 'CLOTransferredStat' );
 
 var getLatestBlocks = require('./index').getLatestBlocks;
 var filterBlocks = require('./filters').filterBlocks;
@@ -560,7 +562,7 @@ exports.data = async (req, res) => {
       return;
     }
 
-    web3.eth.getBlock(blockNumOrHash, uncleIdx, function(err, uncle) {
+    web3.eth.getBlock(blockNumOrHash, uncleIdx, async (err, uncle) =>  {
       if(err || !uncle) {
         console.error("UncleWeb3 error :" + err)
         res.write(JSON.stringify({"error": true}));
@@ -572,7 +574,7 @@ exports.data = async (req, res) => {
 
   } else if ("action" in req.body) {
     if (req.body.action == 'hashrate') {
-      web3.eth.getBlock('latest', function(err, latest) {
+      web3.eth.getBlock('latest', async (err, latest) => {
         if(err || !latest) {
           console.error("StatsWeb3 error :" + err);
           res.write(JSON.stringify({"error": true}));
@@ -583,15 +585,30 @@ exports.data = async (req, res) => {
           if(checknum < 0)
             checknum = 0;
           var nblock = latest.number - checknum;
+
+          const activeAddressesStat = await ActiveAddressesStat.find().sort({blockNumber: -1}).limit(1);
+          const cloTransferredStat = await CLOTransferredStat.find().sort({blockNumber: -1}).limit(1);
+          
+          let activeAddresses = 0;
+          let cloTransferredAmount = 0;
+
+          if (activeAddressesStat) {
+            activeAddresses = activeAddressesStat[0].count;
+          }
+
+          if (cloTransferredStat) {
+            cloTransferredAmount = cloTransferredStat[0].amount;
+          }
+
           web3.eth.getBlock(checknum, function(err, block) {
             if(err || !block) {
               console.error("StatsWeb3 error :" + err);
-              res.write(JSON.stringify({"blockHeight": latest.number, "difficulty": latest.difficulty, "blockTime": 0, "hashrate": 0 }));
+              res.write(JSON.stringify({"blockHeight": latest.number, "difficulty": latest.difficulty, "blockTime": 0, "hashrate": 0, activeAddresses: activeAddresses, cloTransferredAmount: cloTransferredAmount}));
             } else {
               console.log("StatsWeb3: check block: " + block.number);
               var blocktime = (latest.timestamp - block.timestamp) / nblock;
               var hashrate = latest.difficulty / blocktime;
-              res.write(JSON.stringify({"blockHeight": latest.number, "difficulty": latest.difficulty, "blockTime": blocktime, "hashrate": hashrate }));
+              res.write(JSON.stringify({"blockHeight": latest.number, "difficulty": latest.difficulty, "blockTime": blocktime, "hashrate": hashrate, activeAddresses: activeAddresses, cloTransferredAmount: cloTransferredAmount }));
             }
             res.end();
           });

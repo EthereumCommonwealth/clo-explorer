@@ -16,6 +16,18 @@ img.logo-default {
   max-width: 280px;
 }
 
+.dashboard-stat2 .display .number h3 {
+  margin: 10px 0 0 0;
+  padding: 0;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.dashboard-stat2 .display .icon>i {
+  color: #cbd4e0;
+  font-size: 20px;
+}
+
 .item-date {
   padding-left: 1em;
 }
