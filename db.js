@@ -96,14 +96,16 @@ var CLOTransferredStat = new Schema({
 
 
 // create indexes
-Transaction.index({timestamp:-1});
-Transaction.index({blockNumber:-1});
-Transaction.index({from:1, blockNumber:-1});
-Transaction.index({to:1, blockNumber:-1});
-Transaction.index({creates:1, blockNumber:-1});
-Account.index({balance:-1});
-Account.index({balance:-1, blockNumber:-1});
-Block.index({miner:1});
+Transaction.index({timestamp: -1});
+Transaction.index({blockNumber: -1});
+Transaction.index({from: 1, blockNumber: -1});
+Transaction.index({to: 1, blockNumber: -1});
+Transaction.index({creates: 1, blockNumber: -1});
+Account.index({balance: -1});
+Account.index({balance: -1, blockNumber: -1});
+Block.index({miner: -1});
+Block.index({hash: -1});
+Block.index({number: -1});
 Market.index({timestamp: -1})
 ActiveAddressesStat.index({blockNumber: -1});
 CLOTransferredStat.index({blockNumber: -1});
