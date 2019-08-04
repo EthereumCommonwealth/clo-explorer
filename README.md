@@ -6,7 +6,7 @@
 
 Clone the repo
 
-`git clone https://github.com/EthereumCommonwealth/clo-explorerr`
+`git clone https://github.com/EthereumCommonwealth/clo-explorer`
 
 Download [Nodejs and npm](https://docs.npmjs.com/getting-started/installing-node "Nodejs install") if you don't have them
 
