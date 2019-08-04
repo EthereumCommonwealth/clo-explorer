@@ -109,6 +109,8 @@ Block.index({number: -1});
 Market.index({timestamp: -1})
 ActiveAddressesStat.index({blockNumber: -1});
 CLOTransferredStat.index({blockNumber: -1});
+BlockStat.index({timestamp: 1});
+BlockStat.index({number: -1});
 
 mongoose.model('BlockStat', BlockStat);
 mongoose.model('Block', Block);
