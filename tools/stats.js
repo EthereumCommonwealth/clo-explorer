@@ -137,6 +137,8 @@ const calculateActiveAddress = async () => {
             console.log(`Error: Aborted due to error on block number ${lastBlockNumber} - ${err}`);
             process.exit(9);
         }
+
+        console.log('Calculate Active Addresses done')
     });
 }
 
