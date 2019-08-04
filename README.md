@@ -6,7 +6,7 @@
 
 Clone the repo
 
-`git clone https://github.com/EthereumCommonwealth/clo-explorerr`
+`git clone https://github.com/EthereumCommonwealth/clo-explorer`
 
 Download [Nodejs and npm](https://docs.npmjs.com/getting-started/installing-node "Nodejs install") if you don't have them
 
@@ -67,7 +67,7 @@ Basic settings:
 
 
 ### Run:
-The below will start both the web-gui and sync.js (which populates MongoDV with blocks/transactions).
+The below will start both the web-gui and sync.js (which populates MongoDB with blocks/transactions).
 `npm start`
 
 You can leave sync.js running without app.js and it will sync and grab blocks based on config.json parameters
