@@ -118,8 +118,8 @@ const calculateActiveAddress = async () => {
     const lastBlockNumber = await web3.eth.getBlockNumber();
 
     existsStat = await ActiveAddressesStat.find({blockNumber: lastBlockNumber}).limit(1);
-
-    if (existsStat) {
+    
+    if (existsStat.length > 0) {
         return;
     }
 
