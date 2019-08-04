@@ -4,6 +4,10 @@ angular.module('BlocksApp').controller('HomeController', function($rootScope, $s
         App.initAjax();
     });
 
+    $scope.$on("$destroy", function() {
+        clearInterval($scope.autoReloadBlocks);
+    });
+
     var URL = '/data';
 
     $rootScope.isHome = true;
@@ -35,6 +39,10 @@ angular.module('BlocksApp').controller('HomeController', function($rootScope, $s
     $scope.txLoading = false;
     $scope.blockLoading = false;
     $scope.settings = $rootScope.setup;
+    $scope.autoReloadInfo = setInterval(() => {
+      $scope.reloadBlocks();
+      $scope.reloadTransactions();
+    }, 20000)
 })
 .directive('simpleSummaryStats', function($http) {
   return {
