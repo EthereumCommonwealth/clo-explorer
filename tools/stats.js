@@ -2,13 +2,16 @@
   Tool for calculating block stats
 */
 
-var _ = require('lodash');
+const _ = require('lodash');
 var Web3 = require('web3');
 
-var mongoose = require( 'mongoose' );
-var BlockStat = require( '../db.js' ).BlockStat;
+const mongoose = require( 'mongoose' );
+const BlockStat = require( '../db.js' ).BlockStat;
+const ActiveAddressesStat = require('../db').ActiveAddressesStat;
+const Transaction = require('../db').Transaction;
+const CLOTransferredStat = require('../db').CLOTransferredStat;
 
-var updateStats = async (range, interval, rescan) => {
+const updateStats = async (range, interval, rescan) => {
     var latestBlock = await web3.eth.getBlockNumber();
 
     interval = Math.abs(parseInt(interval));
@@ -23,7 +26,7 @@ var updateStats = async (range, interval, rescan) => {
 }
 
 
-var getStats = function(web3, blockNumber, nextBlock, endNumber, interval, rescan) {
+const getStats = function(web3, blockNumber, nextBlock, endNumber, interval, rescan) {
     if (endNumber < 0)
         endNumber = 0;
     if (blockNumber <= endNumber) {
@@ -63,7 +66,7 @@ var getStats = function(web3, blockNumber, nextBlock, endNumber, interval, resca
   *     if record exists: abort
   *     if record DNE: write a file for the block
   */
-var checkBlockDBExistsThenWrite = function(web3, blockData, nextBlock, endNumber, interval, rescan) {
+const checkBlockDBExistsThenWrite = function(web3, blockData, nextBlock, endNumber, interval, rescan) {
     BlockStat.find({number: blockData.number}, function (err, b) {
         if (!b.length && nextBlock) {
             // calc hashrate, txCount, blocktime, uncleCount
@@ -105,6 +108,68 @@ var checkBlockDBExistsThenWrite = function(web3, blockData, nextBlock, endNumber
         }
 
     })
+}
+
+const calculateActiveAddress = async () => {
+    if(!web3.eth.net.isListening()) {
+        return;
+    }
+    const blocksToCalc = 600000; // Around 90 days
+    const lastBlockNumber = await web3.eth.getBlockNumber();
+
+    existsStat = await ActiveAddressesStat.find({blockNumber: lastBlockNumber}).limit(1);
+
+    if (existsStat) {
+        return;
+    }
+
+    addressesFrom = await Transaction.distinct("from", {blockNumber: {$gte: lastBlockNumber - blocksToCalc}}).exec();
+    addressesTo = await Transaction.distinct("to", {blockNumber: {$gte: lastBlockNumber - blocksToCalc}}).exec();
+
+    addresses = _.union(addressesFrom, addressesTo);
+
+    const activeAddresses = {
+        blockNumber: lastBlockNumber,
+        count: addresses.length
+    }
+    new ActiveAddressesStat(activeAddresses).save( function( err, s, count ) {
+        if(err) {
+            console.log(`Error: Aborted due to error on block number ${lastBlockNumber} - ${err}`);
+            process.exit(9);
+        }
+    });
+}
+
+const calculateTransferredCLO = async () => {
+    if(!web3.eth.net.isListening()) {
+        return;
+    }
+    const blocksToCalc = 6640; // ~24 hours
+    const lastBlockNumber = await web3.eth.getBlockNumber();
+
+    transactions = await Transaction.find({blockNumber: {$gte: lastBlockNumber - blocksToCalc}}).exec();
+
+    let txIndex = 0;
+    let amountCLO = 0;
+    const transactionsArrayLenght = transactions.length;
+
+    for(; txIndex < transactionsArrayLenght; txIndex++) {
+        let TransferredValue = transactions[txIndex].value;
+        amountCLO = amountCLO + parseFloat(TransferredValue);
+    }
+
+    const transferredStat = {
+        blockNumber: lastBlockNumber,
+        amount: amountCLO
+    }
+
+    new CLOTransferredStat(transferredStat).save( function( err, s, count ) {
+        if (err) {
+            console.log(`Error: Aborted due to error on block number ${lastBlockNumber} - ${err}`);
+            process.exit(9);
+        }
+        console.log('Calculate Transferred CLO done')
+    });
 }
 
 /** On Startup **/
@@ -165,9 +230,20 @@ var web3 = new Web3(new Web3.providers.HttpProvider('http://' + config.nodeAddr 
 
 // run
 updateStats(range, interval, rescan);
+calculateActiveAddress();
+calculateTransferredCLO();
 
 if (!rescan) {
     setInterval(function() {
       updateStats(range, interval);
     }, statInterval);
 }
+
+setInterval(() => {
+    calculateActiveAddress();
+}, 600 * 1000)
+
+setInterval(() => {
+    calculateTransferredCLO();
+}, 300 * 1000)
+

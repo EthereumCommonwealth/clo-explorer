@@ -84,7 +84,18 @@ var Market = new Schema({
     "quoteUSD": Number
 })
 
-// create indices
+var ActiveAddressesStat = new Schema({
+    "blockNumber": String,
+    "count": Number
+})
+
+var CLOTransferredStat = new Schema({
+    "blockNumber": String,
+    "amount": Number
+})
+
+
+// create indexes
 Transaction.index({timestamp:-1});
 Transaction.index({blockNumber:-1});
 Transaction.index({from:1, blockNumber:-1});
@@ -94,6 +105,8 @@ Account.index({balance:-1});
 Account.index({balance:-1, blockNumber:-1});
 Block.index({miner:1});
 Market.index({timestamp: -1})
+ActiveAddressesStat.index({blockNumber: -1});
+CLOTransferredStat.index({blockNumber: -1});
 
 mongoose.model('BlockStat', BlockStat);
 mongoose.model('Block', Block);
@@ -101,12 +114,17 @@ mongoose.model('Account', Account);
 mongoose.model('Contract', Contract);
 mongoose.model('Transaction', Transaction);
 mongoose.model('Market', Market);
+mongoose.model('ActiveAddressesStat', ActiveAddressesStat);
+mongoose.model('CLOTransferredStat', CLOTransferredStat);
+
 module.exports.BlockStat = mongoose.model('BlockStat');
 module.exports.Block = mongoose.model('Block');
 module.exports.Contract = mongoose.model('Contract');
 module.exports.Transaction = mongoose.model('Transaction');
 module.exports.Account = mongoose.model('Account');
 module.exports.Market = mongoose.model('Market');
+module.exports.ActiveAddressesStat = mongoose.model('ActiveAddressesStat');
+module.exports.CLOTransferredStat = mongoose.model('CLOTransferredStat');
 
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost/blockDB');
 
