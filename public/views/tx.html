@@ -40,7 +40,15 @@
                 <td><span ng-show="tx.isTrace">Contract:</span><a href="/addr/{{tx.to}}">{{tx.to}}</a></td></tr>
           <tr ng-show="tx.creates"><td width="25%">Creates:</td>
                 <td><a href="/addr/{{tx.creates}}">{{tx.creates}}</a></td></tr>
-          <tr ><td width="25%">Value:</td><td><span class="font-green-title"> <img src="/img/mini-logo.svg" alt="mini-logo" class="mini-logo" /> {{tx.value | number: 8}} {{ settings.symbol }}</span> => {{ tx.valueUSD | currency : "USD $" : 4 }}</td></tr>
+          <tr ><td width="25%" style="vertical-align: middle;">Value:</td>
+            <td>
+              <span class="font-green-title"> <img src="/img/mini-logo.svg" alt="mini-logo" class="mini-logo" /> {{tx.value | number: 8}} {{ settings.symbol }}</span> => {{ tx.valueUSD | currency : "USD $" : 4 }}
+
+              <a href="https://changenow.io/exchange?amount=1&amp;from=btc&amp;link_id=501c1d32f1b390&amp;to=clo" rel="noopener" target="_blank" style="margin-left: 0.5em;">
+                <img width="200" src="https://changenow.io/images/embeds/button.svg" alt="ChangeNOW button">
+              </a>
+            </td>
+          </tr>
           <tr ><td width="25%">Transaction fee:</td><td>{{tx.transactionFee | number : 6}} {{ settings.symbol }} => {{ tx.transactionFeeUSD | currency : "USD $" : 10 }}</td></tr>
           <tr ><td width="25%">Gas Provided:</td><td>{{tx.gas | number}}</td></tr>
           <tr ><td width="25%">Gas Used:</td><td>{{tx.gasUsed | number}} ({{tx.gasUsedPercent | number:2}}%)</td></tr>
