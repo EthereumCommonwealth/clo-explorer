@@ -43,3 +43,4 @@ public/js/stats/The_bomb_chart.js
 .node-xmlhttprequest-*
 /nbproject/private/
 public/views/richlist.js
+.idea

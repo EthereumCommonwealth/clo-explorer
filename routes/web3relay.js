@@ -502,7 +502,7 @@ exports.data = async (req, res) => {
 
     const latestPrice = await Market.findOne().sort({timestamp: -1})
     let quoteUSD = 0;
-      
+
     if (latestPrice) {
       quoteUSD = latestPrice.quoteUSD;
     }
@@ -574,46 +574,62 @@ exports.data = async (req, res) => {
 
   } else if ("action" in req.body) {
     if (req.body.action == 'hashrate') {
-      web3.eth.getBlock('latest', async (err, latest) => {
-        if(err || !latest) {
-          console.error("StatsWeb3 error :" + err);
-          res.write(JSON.stringify({"error": true}));
-          res.end();
-        } else {
-          console.log("StatsWeb3: latest block: " + latest.number);
-          var checknum = latest.number - 100;
-          if(checknum < 0)
-            checknum = 0;
-          var nblock = latest.number - checknum;
+      latestBlock = await Block.find().sort({number:-1}).limit(1);
 
-          const activeAddressesStat = await ActiveAddressesStat.find().sort({blockNumber: -1}).limit(1);
-          const cloTransferredStat = await CLOTransferredStat.find().sort({blockNumber: -1}).limit(1);
-          
-          let activeAddresses = 0;
-          let cloTransferredAmount = 0;
+      if(latestBlock.length === 0) {
+        console.error("blockFind error :" + err);
+        res.write(JSON.stringify({"error": true}));
+        res.end();
+      }
 
-          if (activeAddressesStat.length > 0) {
-            activeAddresses = activeAddressesStat[0].count;
-          }
+      latest = latestBlock[0];
 
-          if (cloTransferredStat.length > 0) {
-            cloTransferredAmount = cloTransferredStat[0].amount;
-          }
+      var checknum = latest.number - 100;
+      if(checknum < 0)
+        checknum = 0;
+      var nblock = latest.number - checknum;
 
-          web3.eth.getBlock(checknum, function(err, block) {
-            if(err || !block) {
-              console.error("StatsWeb3 error :" + err);
-              res.write(JSON.stringify({"blockHeight": latest.number, "difficulty": latest.difficulty, "blockTime": 0, "hashrate": 0, activeAddresses: activeAddresses, cloTransferredAmount: cloTransferredAmount}));
-            } else {
-              console.log("StatsWeb3: check block: " + block.number);
-              var blocktime = (latest.timestamp - block.timestamp) / nblock;
-              var hashrate = latest.difficulty / blocktime;
-              res.write(JSON.stringify({"blockHeight": latest.number, "difficulty": latest.difficulty, "blockTime": blocktime, "hashrate": hashrate, activeAddresses: activeAddresses, cloTransferredAmount: cloTransferredAmount }));
-            }
-            res.end();
-          });
-        }
-      });
+      const activeAddressesStat = await ActiveAddressesStat.find().sort({blockNumber: -1}).limit(1);
+      const cloTransferredStat = await CLOTransferredStat.find().sort({blockNumber: -1}).limit(1);
+
+      let activeAddresses = 0;
+      let cloTransferredAmount = 0;
+
+      if (activeAddressesStat.length > 0) {
+        activeAddresses = activeAddressesStat[0].count;
+      }
+
+      if (cloTransferredStat.length > 0) {
+        cloTransferredAmount = cloTransferredStat[0].amount;
+      }
+
+      const blockChecknum = await Block.findOne({number: checknum});
+
+      if (blockChecknum) {
+        var blocktime = (latest.timestamp - blockChecknum.timestamp) / nblock;
+        var hashrate = latest.difficulty / blocktime;
+        res.write(JSON.stringify(
+            {
+              "blockHeight": latest.number,
+              "difficulty": latest.difficulty,
+              "blockTime": blocktime,
+              "hashrate": hashrate,
+              activeAddresses: activeAddresses,
+              cloTransferredAmount: cloTransferredAmount
+            }));
+      } else {
+        res.write(JSON.stringify(
+            {
+              "blockHeight": latest.number,
+              "difficulty": latest.difficulty,
+              "blockTime": 0,
+              "hashrate": 0,
+              activeAddresses: activeAddresses,
+              cloTransferredAmount: cloTransferredAmount
+            }));
+      }
+
+      res.end();
     } else {
       console.error("Invalid Request: " + action)
       res.status(400).send();
