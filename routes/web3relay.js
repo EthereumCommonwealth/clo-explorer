@@ -135,9 +135,9 @@ exports.data = async (req, res) => {
         quoteUSD = latestPrice.quoteUSD;
       }
 
-      const latestBlock = await web3.eth.getBlockNumber() + 1;
+      const latestBlock = await Block.find().sort({number:-1}).limit(1);
 
-      transactionResponse.confirmations = latestBlock - transactionResponse.blockNumber;
+      transactionResponse.confirmations = (latestBlock[0].number + 1) - transactionResponse.blockNumber;
 
       if (!transactionResponse.status) {
         transactionResponse.confirmations = 0;
