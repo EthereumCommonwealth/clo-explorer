@@ -23,7 +23,7 @@ const normalizeTX = async (txData, blockData) => {
     blockHash: txData.blockHash,
     blockNumber: txData.blockNumber,
     from: txData.from.toLowerCase(),
-    to: txData.to.toLowerCase(),
+    to: txData.to.toLowerCase() ? txData.to : '',
     hash: txData.hash,
     value: etherUnits.toEther(new BigNumber(txData.value), 'wei'),
     nonce: txData.nonce,
