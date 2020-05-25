@@ -1,4 +1,6 @@
 require( '../db.js' );
+
+var _ = require('lodash');
 var etherUnits = require("../lib/etherUnits.js");
 var BigNumber = require('bignumber.js');
 
