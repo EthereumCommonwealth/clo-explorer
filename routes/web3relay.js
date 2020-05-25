@@ -72,7 +72,7 @@ console.log('Connecting ' + config.nodeAddr + ':' + config.gethPort + '...');
 if (typeof web3 !== "undefined") {
   web3 = new Web3(web3.currentProvider);
 } else {
-  web3 = new Web3(new Web3.providers.WebsocketProvider('ws://' + config.nodeAddr + ':8546'));
+  web3 = new Web3(new Web3.providers.WebsocketProvider('ws://' + config.nodeAddr + ':' + config.gethWSPort));
 }
 
 web3Addr = new Web3(new Web3.providers.HttpProvider('https://clo-geth.0xinfra.com'));

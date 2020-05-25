@@ -432,7 +432,7 @@ console.log('Connecting ' + config.nodeAddr + ':' + config.gethPort + '...');
 
 // Sets address for RPC WEB3 to connect to, usually your node IP address defaults ot localhost
 //var web3 = new Web3(new Web3.providers.HttpProvider('http://' + config.nodeAddr + ':' + config.gethPort.toString()));
-var web3 = new Web3(new Web3.providers.WebsocketProvider('ws://' + config.nodeAddr + ':8546'));
+var web3 = new Web3(new Web3.providers.WebsocketProvider('ws://' + config.nodeAddr + ':' + config.gethWSPort));
 
 // patch missing blocks
 if (config.patch === true){
