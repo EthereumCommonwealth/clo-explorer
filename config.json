@@ -17,6 +17,7 @@
         "useEthFiat": false,
         "tokenList": "tokens.json",
         "miners": {
+           "0xf34eaf6e2cf4744b5e29734295135c4213d59149": "f2pool.com",
            "0xed15b7b7b5dc81daae277a081b47a04c3a8bea1b": "clopool.pro",
            "0xd125b3b146d21d058edac7a5b5f7481a571e4c46": "clo.epool.io",
            "0xe683de43ccfbef16424ecb577f288cf343dfbc5a": "coinfoundry.org",
