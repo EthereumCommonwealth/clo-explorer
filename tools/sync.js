@@ -267,7 +267,7 @@ const writeTransactionsToDB = async(config, blockData, flush) => {
           console.log('   (...) total ' + accounts.length + ' accounts updated.');
         }
         // upsert account
-        Account.collection.update({ address: account }, { $set: data[account] }, { upsert: true });
+        Account.collection.update({ address: account.toLowerCase() }, { $set: data[account] }, { upsert: true });
       });
     });
 
