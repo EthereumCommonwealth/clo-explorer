@@ -227,6 +227,7 @@ const writeTransactionsToDB = async(config, blockData, flush) => {
     if (accounts.length > 0)
     asyncL.eachSeries(accounts, function(account, eachCallback) {
       var blockNumber = data[account].blockNumber;
+      data[account].address = data[account].address.toLowerCase()
       // get contract account type
       web3.eth.getCode(account, function(err, code) {
         if (err) {
