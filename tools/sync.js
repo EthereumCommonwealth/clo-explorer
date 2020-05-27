@@ -216,7 +216,7 @@ const writeTransactionsToDB = async(config, blockData, flush) => {
 
     // setup miners
     miners.forEach(function(miner) {
-      data[miner.address] = miner;
+      data[miner.address.toLowerCase()] = miner;
     });
 
     var accounts = Object.keys(data);
