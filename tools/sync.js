@@ -208,9 +208,9 @@ const writeTransactionsToDB = async(config, blockData, flush) => {
     // setup accounts
     var data = {};
     bulk.forEach(function(tx) {
-      data[tx.from] = { address: tx.from.toLowerCase(), blockNumber: tx.blockNumber, type: 0 };
+      data[tx.from.toLowerCase()] = { address: tx.from.toLowerCase(), blockNumber: tx.blockNumber, type: 0 };
       if (tx.to) {
-        data[tx.to] = { address: tx.to.toLowerCase(), blockNumber: tx.blockNumber, type: 0 };
+        data[tx.to.toLowerCase()] = { address: tx.to.toLowerCase(), blockNumber: tx.blockNumber, type: 0 };
       }
     });
 
