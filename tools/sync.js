@@ -208,9 +208,9 @@ const writeTransactionsToDB = async(config, blockData, flush) => {
     // setup accounts
     var data = {};
     bulk.forEach(function(tx) {
-      data[tx.from] = { address: tx.from, blockNumber: tx.blockNumber, type: 0 };
+      data[tx.from] = { address: tx.from.toLowerCase(), blockNumber: tx.blockNumber, type: 0 };
       if (tx.to) {
-        data[tx.to] = { address: tx.to, blockNumber: tx.blockNumber, type: 0 };
+        data[tx.to] = { address: tx.to.toLowerCase(), blockNumber: tx.blockNumber, type: 0 };
       }
     });
 
@@ -226,8 +226,6 @@ const writeTransactionsToDB = async(config, blockData, flush) => {
     // update balances
     if (accounts.length > 0)
     asyncL.eachSeries(accounts, function(account, eachCallback) {
-      account = account.toLowerCase()
-      
       var blockNumber = data[account].blockNumber;
       // get contract account type
       web3.eth.getCode(account, function(err, code) {
