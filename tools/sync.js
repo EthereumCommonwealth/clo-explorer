@@ -23,7 +23,7 @@ const normalizeTX = async (txData, blockData) => {
     blockHash: txData.blockHash,
     blockNumber: txData.blockNumber,
     from: txData.from.toLowerCase(),
-    to: txData.to.toLowerCase() ? txData.to : '',
+    to: txData.to.toLowerCase() ? txData.to !== undefined : '',
     hash: txData.hash,
     value: etherUnits.toEther(new BigNumber(txData.value), 'wei'),
     nonce: txData.nonce,
@@ -350,7 +350,7 @@ const runPatcher = async (config, startBlock, endBlock) => {
 
       var lastMissingBlock = docs[0].number + 1;
       var currentBlock = await web3.eth.getBlockNumber();
-      runPatcher(config, currentBlock - 1000, currentBlock - 1);
+      runPatcher(config, currentBlock - 10000, currentBlock - 1);
     });
     return;
   }
