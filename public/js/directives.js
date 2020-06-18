@@ -8,7 +8,7 @@ BlocksApp.directive('ngSpinnerBar', ['$rootScope', '$transitions',
         return {
             link: function(scope, element, attrs) {
                 // by defult hide the spinner bar
-                element.addClass('hide'); // hide spinner bar by default
+                element.addClass('d-none'); // hide spinner bar by default
 
                 // display the spinner bar whenever the route changes(the content part started loading)
                 $transitions.onStart({}, function(trans) {
@@ -25,7 +25,7 @@ BlocksApp.directive('ngSpinnerBar', ['$rootScope', '$transitions',
                     // auto scorll to page top
                     setTimeout(function () {
                         App.scrollTop(); // scroll to the top on content load
-                    }, $rootScope.settings.layout.pageAutoScrollOnLoad);                    
+                    }, $rootScope.settings.layout.pageAutoScrollOnLoad);
                 });
 
                 // handle errors
@@ -57,5 +57,5 @@ BlocksApp.directive('dropdownMenuHover', function () {
     link: function (scope, elem) {
       elem.dropdownHover();
     }
-  };  
+  };
 });
