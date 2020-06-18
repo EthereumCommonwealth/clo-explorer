@@ -1,6 +1,6 @@
 body {
-  background-color: #e5e5e5 !important;
-  font-family: 'Roboto', sans-serif; 
+  background-color: #fff !important;
+  font-family: 'Inter', sans-serif;
 }
 div.page-logo {overflow: visible;}
 img.logo-default {
@@ -13,11 +13,10 @@ img.logo-default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 280px;
+  max-width: 220px;
 }
 
 .dashboard-stat2 .display .number h3 {
-  margin: 10px 0 0 0;
   padding: 0;
   font-size: 18px;
   font-weight: 400;
@@ -199,7 +198,7 @@ li.ng-scope {
   justify-content: flex-end;
 }
 .header-container {
-  display: grid;
+  display: flex;
   grid-template-columns: 1fr 11fr;
   align-items: center;
   justify-content: space-between;
@@ -225,7 +224,62 @@ a:hover {
   left: 24px;
   height: 70px;
 }
-.
+
+.dashboard-stats-container {
+    display: flex;
+    flex-direction: column;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-stats {
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(223, 227, 235);
+    border-image: initial;
+    border-radius: 0.5rem;
+    width: 100%;
+    min-width: 1140px;
+    padding: 1.5rem;
+}
+
+@media only screen and (max-width: 1150px) {
+    .dashboard-summary {
+        height: 100%;
+        overflow-x: auto !important;
+        overflow-y: hidden;
+    }
+    .dashboard-summary::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.dashboard-stats-element {
+    max-width: 500px;
+    padding: 0 0.5rem;
+}
+
+.dashboard-stats-element a {
+    color: rgb(51, 51, 51)
+}
+
+.dashboard-stats-element a:hover {
+    text-decoration: underline;
+}
+
+.dashboard-stats-element h3 {
+    font-size: 18px;
+    font-weight: 400;
+}
+
 .dashboard-stat2 {
   margin-bottom: 0 !important;
 }
@@ -311,4 +365,69 @@ a:hover {
 
 .mini-logo {
   height: 1.2em;
+}
+
+.v-divider{
+    display: flex;
+    margin: 0.5rem 0.5rem;
+    width: 1px;
+    height: 80%;
+    vertical-align: middle;
+    border-left: 1px solid gray;
+}
+
+.tableHeader {
+    display: flex;
+    flex-direction: row;
+    -webkit-box-pack: center;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.tableHeaderElement {
+    display: flex;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.75rem 0px;
+}
+
+.tableHeaderElement span {
+    color: rgb(103, 113, 133);
+    font-feature-settings: "calt" 0;
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: none;
+    font-style: normal;
+    opacity: 1;
+}
+
+.table-item {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    flex-direction: row;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    margin-bottom: 0px;
+}
+
+.table-item-element {
+    display: flex;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    -webkit-box-align: center;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.75rem 0px;
+}
+
+.table-item-element span {
+    font-weight: 500;
+    font-size: 14px;
+    text-transform: none;
+    font-style: normal
 }
