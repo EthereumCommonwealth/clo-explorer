@@ -1,93 +1,65 @@
-<div class="row" style="margin-top:10px;margin-bottom:10px;">
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
-        <div class="dashboard-stat2">
-            <div class="display">
-                <div class="number">
-                    <small>Block Height</small>
-                    <h3>
-                    <div class="icon">
-                        <i class="fas fa-cubes"></i>
-                    </div>
-                    #
-                    <span data-counter="counterup" data-value="stats.blockHeight" class="font-green-title">{{stats.blockHeight | number: 0 }}</span>
-                    </h3>
-                </div>
-            </div>
+<div class="row dashboard-summary" style="margin-top:10px;margin-bottom:10px;overflow-x: auto;">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard-stats">
+        <div class="dashboard-stats-element">
+            <small>Price</small>
+            <h3>
+                <span data-counter="counterup" data-value="stats.blockHeight" class="font-green-title">${{stats.quoteUSD | number: 6 }}</span>
+            </h3>
         </div>
-    </div>
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
-        <div class="dashboard-stat2">
-            <div class="display">
-                <div class="number">
-                    <small>Block Time</small>
-                    <h3>
-                        <div class="icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <span data-counter="counterup" data-value="stats.blockTime" class="font-green-title">{{stats.blockTime | number: 2}} s</span>
-                    </h3>
-                </div>
-            </div>
+
+        <div class="v-divider"></div>
+
+        <div class="dashboard-stats-element">
+            <small><a href="/stats/miner_hashrate">Block Height <svg viewBox="0 0 448 512" class="sc-1pmbxjh-0 cComos sc-1mty1jv-6 hQCYRH" height="8px" selectable="0" width="8px"><path d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg></a></small>
+            <h3>
+                <span data-counter="counterup" data-value="stats.blockHeight" class="font-green-title">{{stats.blockHeight | number: 0 }}</span>
+            </h3>
         </div>
-    </div>
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
-        <div class="dashboard-stat2 ">
-            <div class="display">
-                <div class="number">
-                    <small>Network Hashrate</small>
-                    <h3>
-                        <div class="icon">
-                            <i class="fas fa-tachometer-alt-fastest"></i>
-                        </div>
-                        <span data-counter="counterup" data-value="stats.hashrate" class="font-green-title">{{stats.hashrate | totalDifficulty}}/s</span>
-                    </h3>
-                </div>
-            </div>
+
+        <div class="v-divider"></div>
+
+        <div class="dashboard-stats-element">
+            <small><a href="/stats/blocktime">Block Time <svg viewBox="0 0 448 512" class="sc-1pmbxjh-0 cComos sc-1mty1jv-6 hQCYRH" height="8px" selectable="0" width="8px"><path d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg></a></small>
+            <h3>
+                <span data-counter="counterup" data-value="stats.blockTime" class="font-green-title">{{stats.blockTime | number: 2}} s</span>
+            </h3>
         </div>
-    </div>
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
-        <div class="dashboard-stat2 ">
-            <div class="display">
-                <div class="number">
-                    <small>Difficulty</small>
-                    <h3>
-                        <div class="icon">
-                            <i class="fas fa-puzzle-piece"></i>
-                        </div>
-                        <span data-counter="counterup" data-value="stats.difficulty" class="font-green-title">{{stats.difficulty | totalDifficulty}}</span>
-                    </h3>
-                </div>
-            </div>
+
+        <div class="v-divider"></div>
+
+        <div class="dashboard-stats-element">
+            <small><a href="/stats/hashrate">Network Hashrate <svg viewBox="0 0 448 512" class="sc-1pmbxjh-0 cComos sc-1mty1jv-6 hQCYRH" height="8px" selectable="0" width="8px"><path d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg></a></small>
+            <h3>
+                <span data-counter="counterup" data-value="stats.hashrate" class="font-green-title">{{stats.hashrate | totalDifficulty}}/s</span>
+            </h3>
         </div>
-    </div>
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
-        <div class="dashboard-stat2 ">
-            <div class="display">
-                <div class="number">
-                    <small>ACTIVE ADDRESSES*</small>
-                    <h3>
-                        <div class="icon">
-                            <i class="fas fa-file-invoice-dollar"></i>
-                        </div>
-                        <span data-counter="counterup" data-value="stats.difficulty" class="font-green-title">{{stats.activeAddresses | number}}</span>
-                    </h3>
-                </div>
-            </div>
+
+        <div class="v-divider"></div>
+
+        <div class="dashboard-stats-element">
+            <small><a href="/stats/difficulty">Difficulty <svg viewBox="0 0 448 512" class="sc-1pmbxjh-0 cComos sc-1mty1jv-6 hQCYRH" height="8px" selectable="0" width="8px"><path d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg></a></small>
+            <h3>
+                <span data-counter="counterup" data-value="stats.difficulty" class="font-green-title">{{stats.difficulty | totalDifficulty}}</span>
+            </h3>
         </div>
-    </div>
-    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
-        <div class="dashboard-stat2 ">
-            <div class="display">
-                <div class="number">
-                    <small>CLO Transferred**</small>
-                    <h3>
-                        <div class="icon">
-                            <i class="fas fa-exchange-alt"></i>
-                        </div>
-                        <span data-counter="counterup" data-value="stats.difficulty" class="font-green-title">{{stats.cloTransferredAmount | number:2}}</span>
-                    </h3>
-                </div>
-            </div>
+
+        <div class="v-divider"></div>
+
+        <div class="dashboard-stats-element">
+            <small>Active Addresses*</small>
+            <h3>
+                <span data-counter="counterup" data-value="stats.difficulty" class="font-green-title">{{stats.activeAddresses | number}}</span>
+            </h3>
         </div>
+
+        <div class="v-divider"></div>
+
+        <div class="dashboard-stats-element">
+            <small><a href="/stats/tx">Transaction Volume (24h) <svg viewBox="0 0 448 512" class="sc-1pmbxjh-0 cComos sc-1mty1jv-6 hQCYRH" height="8px" selectable="0" width="8px"><path d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg></a></small>
+            <h3>
+                <span data-counter="counterup" data-value="stats.difficulty" class="font-green-title">{{stats.cloTransferredAmount | number:2}} CLO</span>
+            </h3>
+        </div>
+
     </div>
 </div>
