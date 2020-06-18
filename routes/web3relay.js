@@ -591,6 +591,12 @@ exports.data = async (req, res) => {
 
       const activeAddressesStat = await ActiveAddressesStat.find().sort({blockNumber: -1}).limit(1);
       const cloTransferredStat = await CLOTransferredStat.find().sort({blockNumber: -1}).limit(1);
+      const latestPrice = await Market.findOne().sort({timestamp: -1})
+      let quoteUSD = 0;
+
+      if (latestPrice) {
+        quoteUSD = latestPrice.quoteUSD;
+      }
 
       let activeAddresses = 0;
       let cloTransferredAmount = 0;
@@ -615,7 +621,8 @@ exports.data = async (req, res) => {
               "blockTime": blocktime,
               "hashrate": hashrate,
               activeAddresses: activeAddresses,
-              cloTransferredAmount: cloTransferredAmount
+              cloTransferredAmount: cloTransferredAmount,
+              quoteUSD: quoteUSD
             }));
       } else {
         res.write(JSON.stringify(
