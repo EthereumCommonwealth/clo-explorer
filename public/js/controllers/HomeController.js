@@ -60,6 +60,7 @@ angular.module('BlocksApp').controller('HomeController', function($rootScope, $s
           scope.stats.blockTime = res.data.blockTime;
           scope.stats.activeAddresses = res.data.activeAddresses;
           scope.stats.cloTransferredAmount = res.data.cloTransferredAmount;
+          scope.stats.quoteUSD = res.data.quoteUSD;
           //console.log(res);
 	});
       }

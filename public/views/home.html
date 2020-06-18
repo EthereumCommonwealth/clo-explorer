@@ -13,32 +13,39 @@
                 </div>
                 <div class="actions">
                     <div class="btn-group">
-                        <a class="btn btn-med" ng-click="reloadBlocks()"><i class="fa fa-refresh" ng-class="{'fa-spin': blockLoading}"></i>
+                        <a class="btn btn-med" ng-click="reloadBlocks()"><i class="fa fa-refresh"
+                                                                            ng-class="{'fa-spin': blockLoading}"></i>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="portlet-body">
-                <div class="todo-tasklist scrollable">
-                    <div ng-repeat="t in latest_blocks track by $index" class="todo-tasklist-item row" ng-class="(t.extraData.indexOf('Parity') > -1) ? 'item-border-red': '';(t.extraData.indexOf('Pool') > -1) ? 'item-border-blue': ''">
-                        <!--TODO: color by known miners -->
-                        <div class="col-sm-3">
-                            <span class="todo-tasklist-item-title"><i class="fa fa-cube"></i> <a href="/block/{{t.number}}">{{t.number}}</a></span><br>
-                            <span class="todo-tasklist-date">
-                                <i class="fa fa-hourglass-o"></i>{{t.timestamp | timeDuration }} ago</span>
-                        </div>
-                        <div class="col-sm-7">
-                            <div><span class="todo-tasklist-item-title">Mined by</span> <a href="/addr/{{t.miner}}" class="link-orange">{{t.extraData}}<span ng-if="!t.extraData">{{t.miner}}</span></span></a><br>
-                            {{t.txn}} txns
-                            </div>
-                        </div>
+            <div class="portlet-body" style="width: 100%">
+                <div>
+                    <div class="tableHeader">
+                        <div class="tableHeaderElement" style="width: 20%">
+                            <span opacity="1">Height</span></div>
+                        <div class="tableHeaderElement" style="width: 34%">
+                            <span opacity="1">Mined</span></div>
+                        <div class="tableHeaderElement" style="width: 45%">
+                            <span opacity="1">Miner</span></div>
+                    </div>
+                    <div ng-repeat="t in latest_blocks track by $index" class="table-item">
+                        <div class="table-item-element" style="width: 20%">
+                            <span><a
+                                    href="/block/{{t.number}}">{{t.number}}</a></span></div>
+                        <div class="table-item-element" style="width: 34%">
+                            <span>{{t.timestamp | timeDuration }} ago</span></div>
+                        <div class="table-item-element" style="width: 45%">
+                            <span><a href="/addr/{{t.miner}}"
+                                     class="link-orange">{{t.extraData}}<span
+                                    ng-if="!t.extraData">{{t.miner}}</span></a></span></div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- END PORTLET-->
     </div>
-    <div class="col-md-6 col-sm-6" >
+    <div class="col-md-6 col-sm-6">
         <!-- BEGIN PORTLET-->
         <div class="portlet light">
             <div class="portlet-title">
@@ -48,34 +55,42 @@
                 </div>
                 <div class="actions">
                     <div class="btn-group">
-                        <a class="btn btn-med" ng-click="reloadTransactions()"><i class="fa fa-refresh" ng-class="{'fa-spin': txLoading}"></i>
+                        <a class="btn btn-med" ng-click="reloadTransactions()"><i class="fa fa-refresh"
+                                                                                  ng-class="{'fa-spin': txLoading}"></i>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="portlet-body">
-                <div class="general-item-list scrollable">
-                    <div class="item"  ng-repeat="t in latest_txs track by $index">
-                    <div class="item-head">
-                        <div class="truncate-txhash" style="float:left">
-                          <a href="/tx/{{t.hash}}" class="link-orange">{{t.hash}}</a></strong>       
-                        </div>
-                        <div class="item-date todo-tasklist-date" style="float:left"><i class="fa fa-hourglass-o"></i>{{t.timestamp | timeDuration }} ago</div>
+            <div class="portlet-body" style="width: 100%">
+                <div>
+                    <div class="tableHeader">
+                        <div class="tableHeaderElement" style="width: 55%">
+                            <span opacity="1">Hash</span></div>
+                        <div class="tableHeaderElement" style="width: 20%">
+                            <span opacity="1">Time</span></div>
+                        <div class="tableHeaderElement" style="width: 25%">
+                            <span opacity="1">Amount (CLO)</span></div>
                     </div>
-                    <div class="todo-tasklist-controls">
-                      <span class="todo-tasklist-item-text truncate-addrhash"><strong>From</strong> <a href="/addr/{{t.from}}">{{t.from}}</a></span>
-                      <span class="todo-tasklist-item-text truncate-addrhash"><strong>To</strong> <a href="/addr/{{t.to}}">{{t.to}}</a></span><br>
-                      <div class="todo-tasklist-item-text" style="margin-top:4px;">{{t.value}} {{settings.symbol}}</div>
+                    <div ng-repeat="t in latest_txs track by $index" class="table-item">
+                        <div class="table-item-element" style="width: 55%">
+                            <span class="truncate-txhash">
+                                <a href="/tx/{{t.hash}}" class="link-orange">{{t.hash}}</a>
+                            </span>
+                        </div>
+                        <div class="table-item-element" style="width: 20%">
+                            <span>{{t.timestamp | date: 'H:mm:ss' }}</span>
+                        </div>
+                        <div class="table-item-element" style="width: 25%">
+                            <span>{{t.value | number: 3}} {{settings.symbol}}</div>
+                        </div>
                     </div>
                 </div>
-
             </div>
+            <!-- END PORTLET-->
         </div>
-        <!-- END PORTLET-->
     </div>
-</div>
 
-<div class="col-md-12 col-sm-12">
-    * Last 600,000 blocks </br>
-    ** Last 6,640 blocks
-</div>
+    <div class="col-md-12 col-sm-12">
+        * Last 600,000 blocks </br>
+        ** Last 6,640 blocks
+    </div>
