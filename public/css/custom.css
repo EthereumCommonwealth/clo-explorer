@@ -185,8 +185,12 @@ li.ng-scope {
 }
 .page-spinner-bar{margin-top:-84px;margin-left:-98px;top:50%;left:50%;}
 
-.tx-sucess {
-  color: #34c88a;
+.tx-success {
+    color: #00c9a7;
+    padding: .4rem .7rem;
+    background: rgba(0,201,167,.1);
+    width: 100%;
+    border-radius: 1em;
 }
 
 .tx-failed {
