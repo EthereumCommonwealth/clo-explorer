@@ -20,20 +20,20 @@
 
             <table class="col-lg-12 col-md-12 col-xs-12 table table-hover">
                 <tr>
-                    <td width="25%">Transaction Hash:</td>
-                    <td>{{tx.hash}}</td>
+                    <td width="15%">Transaction Hash:</td>
+                    <td><strong>{{tx.hash}}</strong></td>
                 </tr>
                 <tr>
-                    <td width="25%">Status:</td>
+                    <td width="15%">Status:</td>
                     <td>
-                        <div class="tx-sucess" ng-if="tx.status == 1">Success</div>
+                        <span class="tx-success" ng-if="tx.status == 1"><i class="fas fa-check-circle"></i> Success</span>
                         <div class="tx-failed" ng-if="tx.status == 0">Failed</div>
                     </td>
                 </tr>
                 <tr>
-                    <td width="25%">Block Number:</td>
-                    <td><a href="/block/{{tx.blockNumber}}">{{tx.blockNumber}}</a>
-                        <i class="fas fa-check-circle"></i>
+                    <td width="15%">Block Number:</td>
+                    <td ><a href="/block/{{tx.blockNumber}}">{{tx.blockNumber}}</a>
+                        -
                         <ng-pluralize count="tx.confirmations"
                                       when="{'0': 'No block confirmation',
                       'one': '1 block confirmation',
@@ -42,25 +42,25 @@
                     </td>
                 </tr>
                 <tr>
-                    <td width="25%">TimeStamp:</td>
+                    <td width="15%">Timestamp:</td>
                     <td><i class="far fa-clock"></i> {{tx.datetime | date:'yyyy-MM-dd HH:mm:ss Z' }} ({{tx.timestamp |
                         timeDuration}} ago)
                     </td>
                 </tr>
                 <tr>
-                    <td width="25%">From:</td>
+                    <td width="15%">From:</td>
                     <td><a href="/addr/{{tx.from}}">{{tx.from}}</a></td>
                 </tr>
                 <tr ng-show="tx.to">
-                    <td width="25%">To</td>
+                    <td width="15%">To</td>
                     <td><span ng-show="tx.isTrace">Contract:</span><a href="/addr/{{tx.to}}">{{tx.to}}</a></td>
                 </tr>
                 <tr ng-show="tx.creates">
-                    <td width="25%">Creates:</td>
+                    <td width="15%">Creates:</td>
                     <td><a href="/addr/{{tx.creates}}">{{tx.creates}}</a></td>
                 </tr>
                 <tr>
-                    <td width="25%" style="vertical-align: middle;">Value:</td>
+                    <td width="15%" style="vertical-align: middle;">Value:</td>
                     <td>
                         <span class="font-green-title"> <img src="/img/mini-logo.svg" alt="mini-logo"
                                                              class="mini-logo"/> {{tx.value | number: 8}} {{ settings.symbol }}</span>
@@ -73,35 +73,35 @@
                     </td>
                 </tr>
                 <tr>
-                    <td width="25%">Transaction fee:</td>
+                    <td width="15%">Transaction fee:</td>
                     <td>{{tx.transactionFee | number : 6}} {{ settings.symbol }} => {{ tx.transactionFeeUSD | currency :
                         "USD $" : 10 }}
                     </td>
                 </tr>
                 <tr>
-                    <td width="25%">Gas Provided:</td>
+                    <td width="15%">Gas Provided:</td>
                     <td>{{tx.gas | number}}</td>
                 </tr>
                 <tr>
-                    <td width="25%">Gas Used:</td>
+                    <td width="15%">Gas Used:</td>
                     <td>{{tx.gasUsed | number}} ({{tx.gasUsedPercent | number:2}}%)</td>
                 </tr>
                 <tr>
-                    <td width="25%">Gas Price:</td>
+                    <td width="15%">Gas Price:</td>
                     <td>{{tx.gasPrice | number:9}} {{ settings.symbol }} ({{tx.gasPriceGwei | number}} Gwei)</td>
                 </tr>
                 <tr>
-                    <td width="25%">Nonce:</td>
+                    <td width="15%">Nonce:</td>
                     <td>{{tx.nonce}}</td>
                 </tr>
                 <tr>
-                    <td width="25%">Input Data:</td>
+                    <td width="15%">Input Data:</td>
                     <td>
                         <pre class="code">{{tx.input}}</pre>
                     </td>
                 </tr>
                 <tr ng-if="tx.inputAscii">
-                    <td width="25%">Input data converted to Text:</td>
+                    <td width="15%">Input data converted to Text:</td>
                     <td>
                         <pre class="code">{{tx.inputAscii}}</pre>
                     </td>
