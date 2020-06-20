@@ -1,87 +1,141 @@
 <!-- BEGIN PAGE CONTENT-->
 <div class="row">
-  <div class="col-md-12 portlet light">
-      <div ng-if="tx.from.indexOf('0xd813419749b3c2cdc94a2f9cfcf154113264a9d6') !== -1 || tx.to.indexOf('0xd813419749b3c2cdc94a2f9cfcf154113264a9d6') !== -1">
-        <div class="col-md-12 no-padding"><h3>Cold Staking transaction:
-          <div style="display: inline;" ng-if="tx.input == '0x1f288efb' || tx.input == '0x'">
-            <strong style="color: #34c88a;">Deposit</strong>
-          </div>
-          <div style="display: inline;" ng-if="tx.input == '0x4e71d92d'">
-            <strong style="color: #34c88a;">Claim (Reward only)</strong>
-          </div>
-          <div style="display: inline;" ng-if="tx.input == '0xcd948855'">
-            <strong style="color: #34c88a;">Withdraw (Stake deposit + Reward)</strong>
-          </div>
-        </h3></div>
-      </div>
-      <div class="portlet-body">
+    <div class="col-lg-12 col-md-12 col-xs-12">
+        <div ng-if="tx.from.indexOf('0xd813419749b3c2cdc94a2f9cfcf154113264a9d6') !== -1 || tx.to.indexOf('0xd813419749b3c2cdc94a2f9cfcf154113264a9d6') !== -1">
+            <div class="col-lg-12 col-md-12 col-xs-12 no-padding">
+                <h3>Cold Staking transaction:
+                    <div style="display: inline;" ng-if="tx.input == '0x1f288efb' || tx.input == '0x'">
+                        <strong style="color: #34c88a;">Deposit</strong>
+                    </div>
+                    <div style="display: inline;" ng-if="tx.input == '0x4e71d92d'">
+                        <strong style="color: #34c88a;">Claim (Reward only)</strong>
+                    </div>
+                    <div style="display: inline;" ng-if="tx.input == '0xcd948855'">
+                        <strong style="color: #34c88a;">Withdraw (Stake deposit + Reward)</strong>
+                    </div>
+                </h3>
+            </div>
+        </div>
+        <div class="portlet-body">
 
-        <table class="col-md-6 table table-hover">
-          <tr ><td width="25%">Transaction Hash:</td><td>{{tx.hash}}</td></tr>
-          <tr ><td width="25%">Status:</td><td>
-            <div class="tx-sucess" ng-if="tx.status == 1">Success</div>
-            <div class="tx-failed" ng-if="tx.status == 0">Failed</div>
-          </td></tr>
-          <tr ><td width="25%">Block Number:</td>
-                <td><a href="/block/{{tx.blockNumber}}">{{tx.blockNumber}}</a>
-                  <i class="fas fa-check-circle"></i> 
-                  <ng-pluralize count="tx.confirmations"
-                  when="{'0': 'No block confirmation',
+            <table class="col-lg-12 col-md-12 col-xs-12 table table-hover">
+                <tr>
+                    <td width="25%">Transaction Hash:</td>
+                    <td>{{tx.hash}}</td>
+                </tr>
+                <tr>
+                    <td width="25%">Status:</td>
+                    <td>
+                        <div class="tx-sucess" ng-if="tx.status == 1">Success</div>
+                        <div class="tx-failed" ng-if="tx.status == 0">Failed</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%">Block Number:</td>
+                    <td><a href="/block/{{tx.blockNumber}}">{{tx.blockNumber}}</a>
+                        <i class="fas fa-check-circle"></i>
+                        <ng-pluralize count="tx.confirmations"
+                                      when="{'0': 'No block confirmation',
                       'one': '1 block confirmation',
                       'other': '{} block confirmations'}">
-                  </ng-pluralize></td>
-          </tr>
-          <tr ><td width="25%">TimeStamp:</td>
-                <td><i class="far fa-clock"></i> {{tx.datetime | date:'yyyy-MM-dd HH:mm:ss Z' }} ({{tx.timestamp | timeDuration}} ago)</td>
-          </tr>
-          <tr ><td width="25%">From:</td>
-                <td><a href="/addr/{{tx.from}}">{{tx.from}}</a></td></tr>
-          <tr ng-show="tx.to"><td width="25%">To</td>
-                <td><span ng-show="tx.isTrace">Contract:</span><a href="/addr/{{tx.to}}">{{tx.to}}</a></td></tr>
-          <tr ng-show="tx.creates"><td width="25%">Creates:</td>
-                <td><a href="/addr/{{tx.creates}}">{{tx.creates}}</a></td></tr>
-          <tr ><td width="25%" style="vertical-align: middle;">Value:</td>
-            <td>
-              <span class="font-green-title"> <img src="/img/mini-logo.svg" alt="mini-logo" class="mini-logo" /> {{tx.value | number: 8}} {{ settings.symbol }}</span> => {{ tx.valueUSD | currency : "USD $" : 4 }}
+                        </ng-pluralize>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%">TimeStamp:</td>
+                    <td><i class="far fa-clock"></i> {{tx.datetime | date:'yyyy-MM-dd HH:mm:ss Z' }} ({{tx.timestamp |
+                        timeDuration}} ago)
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%">From:</td>
+                    <td><a href="/addr/{{tx.from}}">{{tx.from}}</a></td>
+                </tr>
+                <tr ng-show="tx.to">
+                    <td width="25%">To</td>
+                    <td><span ng-show="tx.isTrace">Contract:</span><a href="/addr/{{tx.to}}">{{tx.to}}</a></td>
+                </tr>
+                <tr ng-show="tx.creates">
+                    <td width="25%">Creates:</td>
+                    <td><a href="/addr/{{tx.creates}}">{{tx.creates}}</a></td>
+                </tr>
+                <tr>
+                    <td width="25%" style="vertical-align: middle;">Value:</td>
+                    <td>
+                        <span class="font-green-title"> <img src="/img/mini-logo.svg" alt="mini-logo"
+                                                             class="mini-logo"/> {{tx.value | number: 8}} {{ settings.symbol }}</span>
+                        => {{ tx.valueUSD | currency : "USD $" : 4 }}
 
-              <a href="https://changenow.io/exchange?amount=1&amp;from=btc&amp;link_id=501c1d32f1b390&amp;to=clo" rel="noopener" target="_blank" style="margin-left: 0.5em;">
-                <img width="200" src="https://changenow.io/images/embeds/button.svg" alt="ChangeNOW button">
-              </a>
-            </td>
-          </tr>
-          <tr ><td width="25%">Transaction fee:</td><td>{{tx.transactionFee | number : 6}} {{ settings.symbol }} => {{ tx.transactionFeeUSD | currency : "USD $" : 10 }}</td></tr>
-          <tr ><td width="25%">Gas Provided:</td><td>{{tx.gas | number}}</td></tr>
-          <tr ><td width="25%">Gas Used:</td><td>{{tx.gasUsed | number}} ({{tx.gasUsedPercent | number:2}}%)</td></tr>
-          <tr ><td width="25%">Gas Price:</td><td>{{tx.gasPrice | number:9}} {{ settings.symbol }} ({{tx.gasPriceGwei | number}} Gwei)</td></tr>
-          <tr ><td width="25%">Nonce:</td><td>{{tx.nonce}}</td></tr>
-          <tr ><td width="25%">Input Data:</td><td><pre class="code">{{tx.input}}</pre></td></tr>
-          <tr ng-if="tx.inputAscii"><td width="25%">Input data converted to Text:</td><td><pre class="code">{{tx.inputAscii}}</pre></td></tr>
+                        <a href="https://changenow.io/exchange?amount=1&amp;from=btc&amp;link_id=501c1d32f1b390&amp;to=clo"
+                           rel="noopener" target="_blank" style="margin-left: 0.5em;">
+                            <img width="200" src="https://changenow.io/images/embeds/button.svg" alt="ChangeNOW button">
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%">Transaction fee:</td>
+                    <td>{{tx.transactionFee | number : 6}} {{ settings.symbol }} => {{ tx.transactionFeeUSD | currency :
+                        "USD $" : 10 }}
+                    </td>
+                </tr>
+                <tr>
+                    <td width="25%">Gas Provided:</td>
+                    <td>{{tx.gas | number}}</td>
+                </tr>
+                <tr>
+                    <td width="25%">Gas Used:</td>
+                    <td>{{tx.gasUsed | number}} ({{tx.gasUsedPercent | number:2}}%)</td>
+                </tr>
+                <tr>
+                    <td width="25%">Gas Price:</td>
+                    <td>{{tx.gasPrice | number:9}} {{ settings.symbol }} ({{tx.gasPriceGwei | number}} Gwei)</td>
+                </tr>
+                <tr>
+                    <td width="25%">Nonce:</td>
+                    <td>{{tx.nonce}}</td>
+                </tr>
+                <tr>
+                    <td width="25%">Input Data:</td>
+                    <td>
+                        <pre class="code">{{tx.input}}</pre>
+                    </td>
+                </tr>
+                <tr ng-if="tx.inputAscii">
+                    <td width="25%">Input data converted to Text:</td>
+                    <td>
+                        <pre class="code">{{tx.inputAscii}}</pre>
+                    </td>
+                </tr>
 
-        </table>
+            </table>
 
-        <table class="table table-condensed" ng-show="tx.isTrace">
-          <thead>
-              <tr>
-                  <th> From </th>
-                  <th> To </th>
-                  <th style="text-align:right"> Amount </th>
-                  <th style="text-align:right"> Gas </th>
-                  <th style="text-align:right"> GasUsed </th>
-                  <th></th>
-              </tr>
-          </thead>
-          <tbody>
-              <tr ng-repeat="t in internal_transactions track by $index">
-                  <td class="truncate-addrhash"> <a href="/addr/{{t.from}}">{{t.from}}</a> </td>
-                  <td class="truncate-addrhash"> <a href="/addr/{{t.to}}">{{t.to}}</a> </td>
-                  <td style="text-align:right"> <span ng-show="t.value != 0">{{t.value}} {{settings.symbol}}</span><span ng-show="t.amount">{{t.amount | number}}</span> </td>
-                  <td style="text-align:right"> {{t.gas}} </td>
-                  <td style="text-align:right"> {{t.gasUsed}} </td>
-                  <td style="text-align:center"><span class="label label-sm label-info {{t.type}}"> {{t.type}}</span><span class="label label-sm label-danger" ng-show="t.error"> {{t.error}}</span></td>
-              </tr>
-          </tbody>
-        </table>
+            <table class="table table-condensed" ng-show="tx.isTrace">
+                <thead>
+                <tr>
+                    <th> From</th>
+                    <th> To</th>
+                    <th style="text-align:right"> Amount</th>
+                    <th style="text-align:right"> Gas</th>
+                    <th style="text-align:right"> GasUsed</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="t in internal_transactions track by $index">
+                    <td class="truncate-addrhash"><a href="/addr/{{t.from}}">{{t.from}}</a></td>
+                    <td class="truncate-addrhash"><a href="/addr/{{t.to}}">{{t.to}}</a></td>
+                    <td style="text-align:right"><span
+                            ng-show="t.value != 0">{{t.value}} {{settings.symbol}}</span><span ng-show="t.amount">{{t.amount | number}}</span>
+                    </td>
+                    <td style="text-align:right"> {{t.gas}}</td>
+                    <td style="text-align:right"> {{t.gasUsed}}</td>
+                    <td style="text-align:center"><span
+                            class="label label-sm label-info {{t.type}}"> {{t.type}}</span><span
+                            class="label label-sm label-danger" ng-show="t.error"> {{t.error}}</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
-
-  </div>
 </div>
