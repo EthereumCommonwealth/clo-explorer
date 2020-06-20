@@ -102,13 +102,23 @@ pre {
     white-space: pre-wrap;
     word-wrap: break-word;
 }
+
 pre.code-js, .verified{
     max-height: 200px;
 }
+
 .code {
     font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
     font-size: 13px;
+    background: #f8f9fa;
+    padding: 1em;
+    width: 100%;
+    background-clip: padding-box;
+    border: 1px solid #d5dae2;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
+
 i.verified:before{
   content:"\f1ce"
 }
