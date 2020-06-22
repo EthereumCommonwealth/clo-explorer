@@ -176,6 +176,12 @@ li.ng-scope {
     }
 }
 
+@media(max-width: 700px) {
+    .search-form.open {
+        width: 410px !important;
+    }
+}
+
 .page-header .page-header-menu .hor-menu .navbar-nav {
   position: relative;
 }
