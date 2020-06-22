@@ -16,6 +16,13 @@ img.logo-default {
   max-width: 220px;
 }
 
+.mobile-truncate-txhash, .mobile-truncate-addrhash {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60px !important;
+}
+
 .dashboard-stat2 .display .number h3 {
   padding: 0;
   font-size: 18px;
