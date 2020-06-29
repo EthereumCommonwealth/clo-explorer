@@ -141,7 +141,25 @@ li.ng-scope {
 .table-scrollable {
     margin: 0 !important;
 }
-@media(max-width: 487px) {
+
+@media(max-width: 768px) {
+    .search-form.open {
+        width: 410px !important;
+    }
+
+    .truncate-txhash {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 130px !important;
+    }
+}
+
+@media(max-width: 468px) {
+    .ng-binding {
+        font-size: 12px !important;
+    }
+
     .container {
         margin: 0 !important;
     }
@@ -174,13 +192,15 @@ li.ng-scope {
     .page-header-menu {
       width: 100%;
     }
-}
 
-@media(max-width: 700px) {
-    .search-form.open {
-        width: 410px !important;
+    .truncate-txhash {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 110px !important;
     }
 }
+
 
 .page-header .page-header-menu .hor-menu .navbar-nav {
   position: relative;
