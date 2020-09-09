@@ -402,6 +402,11 @@ a:hover {
   background: #f2f6f6 !important;
 }
 
+.simple-swap-widget {
+  background-color: rgb(13, 51, 118);
+  padding: 1rem;
+}
+
 .page-footer {
   background-color: #FFF !important;
 }
